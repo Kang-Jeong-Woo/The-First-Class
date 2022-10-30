@@ -13,15 +13,16 @@
 <body>
 <div class="container">
     <div class="brand-logo"><img src="../img/vought.png"></div>
-    <h4>안녕하세요! 선거를 시작해보죠!</h4>
-    <h6>로그인하기</h6>
-    <form class="" action="/login.do" method="post">
-    <div class="loginform">
-        <div class="form-group"><input type="text" id="id" name="id" placeholder="User email"></div>
-        <div class="form-group"><input type="password" id="pw" name="pw" placeholder="Password"></div>
-        <button type="submit" class="btn btn-outline-success">로그인</button>
-
-    </div>
+    <h4>힘내라 대한민국! 대한민국 회원이되어보세요!</h4>
+    <h6>회원가입</h6>
+    <form class="" action="/signUp.do" method="post">
+        <div class="loginform">
+            <div class="form-group"><input type="text" id="id" name="id" placeholder="User email"></div>
+            <div class="form-group"><input type="password" id="pw" name="pw" placeholder="Password"></div>
+            <div class="form-group"><input type="text" id="nick" name="nick" placeholder="Nick Name"></div>
+            <div class="form-group"><input type="text" id="addr" name="addr" placeholder="Address"><a href="#">주소찾기</a></div>
+            <button type="submit" class="btn btn-outline-success">회원가입</button>
+        </div>
     </form>
 </div>
 <script src="../css/index.css"></script>

@@ -10,9 +10,13 @@
         select * from member
     </select>
 
+    <select id="logIn" parameterType="String" resultType="com.first.boiler.entity.MemberVO">
+        select * from member where id = #{id} and pw = #{pw}
+    </select>
 
-
-
+    <insert id="signUp" parameterType="com.first.boiler.entity.MemberVO">
+        insert into member values (#{id},#{pw},#{nick},#{addr});
+    </insert>
 
 
 
