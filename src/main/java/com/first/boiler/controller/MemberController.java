@@ -48,4 +48,12 @@ public class MemberController {
         mapper.signUp(vo);
         return "redirect:/";
     }
+
+    @GetMapping("/goMap.do")
+    public String goMap(){
+        return "map";
+    }
+
+    @GetMapping("/goLab.do")
+    public String goLab(){ return "lab";}
 }

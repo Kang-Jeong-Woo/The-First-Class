@@ -11,7 +11,12 @@
 <tr th:each="i : ${vo}">
     <td th:text="${i.getNick()}">idSection</td>
 </tr>
-<div><a href= "goSignIn.do">로그인</a></div>
-<div><a href="goSignUp.do">회원가입</a></div>
+<span th:if="${userId==null}">
+    <div><a href= "goSignIn.do">로그인</a></div>
+    <a href=""><img src="../img/kakao_login_medium_wide.png"></a>
+    <div><a href="goSignUp.do">회원가입</a></div>
+</span>
+<span><a href="goMap.do">지도보기</a></span>
+<span><a href="goLab.do">실헝실</a></span>
 </body>
 </html>
