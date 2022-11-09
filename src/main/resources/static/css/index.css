@@ -1,8 +1,12 @@
+html {
+    font-family: 'Black Han Sans', sans-serif;
+    height: 200px;
+}
 .menucontainer {
     display: grid;
     grid-auto-rows: 1fr;
-    grid-template-columns: 20% 40% 40%;
-    grid-template-rows: 10% 80% 10%;
+    grid-template-columns: 20vw 40vw 40vw;
+    grid-template-rows: 10vh 80vh 10vh;
     gap: 0px 0px;
     grid-auto-flow: row;
     grid-template-areas:
