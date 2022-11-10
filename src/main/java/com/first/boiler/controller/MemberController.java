@@ -54,5 +54,6 @@ public class MemberController {
     }
 
     @GetMapping("/goLab.do")
-    public String goLab(){ return "lab";}
+    public String goLab(){ return "main";}
+
 }

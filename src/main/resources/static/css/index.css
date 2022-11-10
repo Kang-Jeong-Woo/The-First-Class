@@ -1,4 +1,4 @@
-html {
+/*html {
     font-family: 'Black Han Sans', sans-serif;
     height: 200px;
 }
@@ -29,4 +29,33 @@ html {
 
 #header1, #header2{
     background-color: #6610f2;
+}*/
+
+.c_wing_top{
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    width: 42px;
+    height: 42px;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 50%;
+    background: lightgray;
+    /*margin: 0 auto;*/
+    /*overflow: hidden;*/
+    /*line-height: 200px !important;*/
+}
+
+#container{
+    position: relative;
+    z-index: 0;
+}
+
+.container-fluid{
+    position: absolute;
+    left: -20%;
+    z-index: 1;
+    width: 20%;
+    height: 100vh;
+    background-color: lightgray;
 }

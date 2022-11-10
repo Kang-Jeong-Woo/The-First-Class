@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <script src="/js/jquery-3.6.1.min.js"></script>
 
     <style>
         #container {overflow:hidden;height:100vh;position:relative;}
@@ -24,10 +25,50 @@
         #close {position: absolute;padding: 4px;top: 5px;left: 5px;cursor: pointer;background: #fff;border-radius: 4px;border: 1px solid #c8c8c8;box-shadow: 0px 1px #888;}
         #close .img {display: block;background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/rv_close.png) no-repeat;width: 14px;height: 14px;}
     </style>
+
 </head>
 <body>
 
+<!-- Fixed Button START -->
 
+<img src="/img/arrow.jpeg" class="c_wing_top">
+
+<!-- Fixed Button END -->
+
+
+<!-- navigation START -->
+
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="card-65721">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="card-link collapsed" data-toggle="collapse" data-parent="#card-65721" href="#card-element-941956">Collapsible Group Item #1</a>
+                    </div>
+                    <div id="card-element-941956" class="collapse">
+                        <div class="card-body">
+                            Anim pariatur cliche...
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <a class="card-link collapsed" data-toggle="collapse" data-parent="#card-65721" href="#card-element-586725">Collapsible Group Item #2</a>
+                    </div>
+                    <div id="card-element-586725" class="collapse">
+                        <div class="card-body">
+                            Anim pariatur cliche...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- navigation END -->
 
 
 <!-- Map START -->
@@ -42,8 +83,21 @@
     </div>
 </div>
 
+
+
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=22ba7b17e2b06e0bb41dd31e0cf7b3a5"></script>
 <script>
+    <!-- Button animation START -->
+    const $foldBtnImg = $('#c_wing_top > img')
+    const $menuNav = $('.container-fluid')
+    $foldBtnImg.addEventListener("click", $menuNav.animate({'left': -200 }))
+    $foldBtnImg.css({transform: 'rotate(0)'});
+    $foldBtnImg.animate({['rotate']: 180}, {step: (now, fx) => $(fx.elem).css({transform: `rotate(${now}deg)`}), duration: 1000});
+
+</script>
+<script>
+    <!-- Map START -->
     var overlayOn = false, // 지도 위에 로드뷰 오버레이가 추가된 상태를 가지고 있을 변수
         container = document.getElementById('container'), // 지도와 로드뷰를 감싸고 있는 div 입니다
         mapWrapper = document.getElementById('mapWrapper'), // 지도를 감싸고 있는 div 입니다
