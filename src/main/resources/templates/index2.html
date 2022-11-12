@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<tr th:each="i : ${vo}">
+    <td th:text="${i.getNick()}">idSection</td>
+</tr>
+<span th:if="${userId==null}">
+    <div><a href= "goSignIn.do">로그인</a></div>
+    <a href=""><img src="../img/kakao_login_medium_wide.png"></a>
+    <div><a href="goSignUp.do">회원가입</a></div>
+</span>
+<span><a href="goMap.do">지도보기</a></span>
+<span><a href="goLab.do">실험실</a></span>
+<span><a href="goBigdata.do">Bigdata</a></span>
+<span><a href="goHousingMarket.do">housing</a></span>
+</body>
+</html>

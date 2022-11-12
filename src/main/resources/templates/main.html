@@ -30,8 +30,8 @@
 <body>
 
 <!-- Fixed Button START -->
-
 <img src="/img/arrow.jpeg" class="c_wing_top">
+
 
 <!-- Fixed Button END -->
 
@@ -89,11 +89,15 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=22ba7b17e2b06e0bb41dd31e0cf7b3a5"></script>
 <script>
     <!-- Button animation START -->
-    const $foldBtnImg = $('#c_wing_top > img')
+    const $foldBtnImg = $('#c_wing_top')
+    console.log($foldBtnImg.height)
     const $menuNav = $('.container-fluid')
-    $foldBtnImg.addEventListener("click", $menuNav.animate({'left': -200 }))
-    $foldBtnImg.css({transform: 'rotate(0)'});
-    $foldBtnImg.animate({['rotate']: 180}, {step: (now, fx) => $(fx.elem).css({transform: `rotate(${now}deg)`}), duration: 1000});
+
+    $foldBtnImg.addEventListener("click", function () {
+        $menuNav.animate({'left': -200 })
+        $foldBtnImg.css({transform: 'rotate(0)'});
+        $foldBtnImg.animate({['rotate']: 180}, {step: (now, fx) => $(fx.elem).css({transform: `rotate(${now}deg)`}), duration: 1000});
+    });
 
 </script>
 <script>
@@ -104,7 +108,7 @@
         mapContainer = document.getElementById('map'), // 지도를 표시할 div 입니다
         rvContainer = document.getElementById('roadview'); //로드뷰를 표시할 div 입니다
 
-    var mapCenter = new kakao.maps.LatLng(33.45042 , 126.57091), // 지도의 중심좌표
+    var mapCenter = new kakao.maps.LatLng(35.1468849 , 126.8409538), // 지도의 중심좌표
         mapOption = {
             center: mapCenter, // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨

@@ -31,15 +31,16 @@ public class MemberController {
         return "signUp";
     }
     @GetMapping("/signIn.do")
-    public void signin(){
+    public void signin(){}
 
-    }
+    @GetMapping("/index.do")
+    public void index(){}
 
     @PostMapping("/login.do")
     public String Login(String id, String pw, Model model){
         MemberVO vo = mapper.logIn(id, pw);
         model.addAttribute("vo", vo);
-        return "index";
+        return "index2";
     }
 
     @PostMapping("/signUp.do")
@@ -56,4 +57,24 @@ public class MemberController {
     @GetMapping("/goLab.do")
     public String goLab(){ return "main";}
 
+    @GetMapping("/goBigdata.do")
+    public String gobigdate(){ return "bigdata";}
+
+    @GetMapping("/goHousingMarket.do")
+    public String goHousing(){return "housingmarket";}
+
+    @GetMapping("/about.do")
+    public String goAbout(){return "about";}
+
+    @GetMapping("/contact.do")
+    public String goContact(){return "contact";}
+
+    @GetMapping("/portfolio.do")
+    public String goPortfolio(){return "portfolio";}
+
+    @GetMapping("/services.do")
+    public String goServices(){return "services";}
+
+    @GetMapping("/single.do")
+    public String goSingle(){return "single";}
 }

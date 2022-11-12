@@ -1,22 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<tr th:each="i : ${vo}">
-    <td th:text="${i.getNick()}">idSection</td>
-</tr>
-<span th:if="${userId==null}">
-    <div><a href= "goSignIn.do">로그인</a></div>
-    <a href=""><img src="../img/kakao_login_medium_wide.png"></a>
-    <div><a href="goSignUp.do">회원가입</a></div>
-</span>
-<span><a href="goMap.do">지도보기</a></span>
-<span><a href="goLab.do">실험실</a></span>
-</body>
+  <head>
+    <!-- 
+    More Templates Visit ==> ProBootstrap.com
+    Free Template by ProBootstrap.com under the License Creative Commons 3.0 ==> (probootstrap.com/license)
+
+    IMPORTANT: You can do whatever you want with this template but you need to keep the footer link back to ProBootstrap.com
+    -->
+    <title>명당</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Free HTML5 Website Template by ProBootstrap.com" />
+    <meta name="keywords" content="free bootstrap 4, free bootstrap 4 template, free website templates, free html5, free template, free website template, html5, css3, mobile first, responsive" />
+    <meta name="author" content="ProBootstrap.com" />
+    
+    <!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/open-iconic-bootstrap.min.css">
+    
+    <link rel="stylesheet" href="/ss/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="/css/icomoon.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+
+
+  </head>
+  <body>
+    
+    <div th:replace="/header.html"></div>
+
+    <main role="main" class="probootstrap-main js-probootstrap-main">
+      <div class="probootstrap-bar">
+        <a href="#" class="probootstrap-toggle js-probootstrap-toggle"><span class="oi oi-menu"></span></a>
+        <div class="probootstrap-main-site-logo"><a href="index.html">Aside</a></a></div>
+      </div>
+      <div class="card-columns">
+
+        <div class="card">
+          <a href="single.do">
+          <img class="card-img-top probootstrap-animate" src="/img/img_1.jpg" alt="Card image cap" data-animate-effect="fadeIn">
+          </a>
+        </div>
+
+
+
+        <div class="card">
+          <a href="single.html">
+            <img class="card-img-top probootstrap-animate" src="images/img_1.jpg" alt="Card image cap" data-animate-effect="fadeIn">
+          </a>
+        </div>
+
+
+
+
+      </div>
+
+      <div th:replace="/footer.html"></div>
+
+
+    </main>
+
+    
+
+    <script src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.waypoints.min.js"></script>
+    <script src="/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/main.js"></script>
+
+    
+  </body>
 </html>
