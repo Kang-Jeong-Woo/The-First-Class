@@ -22,8 +22,9 @@
 <div class="">
 
     <div class="">
-        <div class=""></div>
-        <div class=""></div>
+        <tr th:each="i : ${vo}" class="">
+        <td th:text="${i.getNick()}" class=""></td>
+        </tr>
     </div>
 
     <div class=""></div>

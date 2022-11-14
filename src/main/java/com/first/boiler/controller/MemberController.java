@@ -77,4 +77,11 @@ public class MemberController {
 
     @GetMapping("/single.do")
     public String goSingle(){return "single";}
+
+    @GetMapping("/hello.do")
+    public String hello(Model model){
+        List<MemberVO> vo = mapper.searchAll();
+        model.addAttribute("vo",vo);
+        return "hello";
+    }
 }

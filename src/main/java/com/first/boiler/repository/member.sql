@@ -1,7 +1,7 @@
-select * from 1st.member;
+select * from member;
 
 
-insert into 1st.member values (5,5,5,5);
+
 
 
 
