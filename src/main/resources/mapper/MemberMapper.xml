@@ -7,15 +7,15 @@
 <mapper namespace="com.first.boiler.mapper.MemberMapper">
 
     <select id="searchAll" resultType="com.first.boiler.entity.MemberVO">
-        select * from Member
+        select * from members
     </select>
 
     <select id="logIn" parameterType="String" resultType="com.first.boiler.entity.MemberVO">
-        select * from Member where id = #{id} and pw = #{pw}
+        select * from members where id = #{id} and pw = #{pw}
     </select>
 
     <insert id="signUp" parameterType="com.first.boiler.entity.MemberVO">
-        insert into Member values (#{id},#{pw},#{nick},#{addr});
+        insert into members values (#{id},#{pw},#{nick},#{addr});
     </insert>
 
 
