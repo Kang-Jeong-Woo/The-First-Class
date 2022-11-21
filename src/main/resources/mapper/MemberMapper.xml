@@ -7,20 +7,24 @@
 <mapper namespace="com.first.boiler.mapper.MemberMapper">
 
     <select id="searchAll" resultType="com.first.boiler.entity.MemberVO">
-        select * from members
+        select * from members;
     </select>
 
     <select id="logIn" parameterType="String" resultType="com.first.boiler.entity.MemberVO">
-        select * from members where id = #{id} and pw = #{pw}
+        select * from members where id = #{id} and pw = #{pw};
     </select>
 
     <insert id="signUp" parameterType="com.first.boiler.entity.MemberVO">
         insert into members values (#{id},#{pw},#{nick},#{addr});
     </insert>
 
+    <select id="getAllRe" resultType="com.first.boiler.entity.RealestatesVO">
+        select * from realestates;
+    </select>
 
-
-
+    <select id="distanceCheck" parameterType="float" resultType="com.first.boiler.entity.RealestatesVO">
+        select * from realestates where lat = #{lat} and lng = #{lng};
+    </select>
 
 
 

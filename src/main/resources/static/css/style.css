@@ -585,3 +585,9 @@ textarea {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+/* kkt map */
+#map{
+  width: 100%;
+  height: 92vh;
+}

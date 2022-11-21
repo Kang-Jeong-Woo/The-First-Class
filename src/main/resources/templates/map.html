@@ -1,443 +1,316 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>명당 MAP</title>
+  <head>
 
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/index.css" rel="stylesheet" >
+    <title>명당 지도(kkt)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Free HTML5 Website Template by ProBootstrap.com" />
+    <meta name="keywords" content="free bootstrap 4, free bootstrap 4 template, free website templates, free html5, free template, free website template, html5, css3, mobile first, responsive" />
+    <meta name="author" content="ProBootstrap.com" />
+    
+    <!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet"> -->
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
 
-<!--    <link rel="stylesheet" href="../static/css/index.css">-->
-<!--    <link rel="stylesheet" href="../static/css/bootstrap.min.css">-->
-
-    <script src="https://kit.fontawesome.com/81385b77d5.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <style>
-        #container {overflow:hidden;height:100vh;position:relative;}
-        #mapWrapper {width:100vw;height:100vh;z-index:1;}
-        #rvWrapper {width:50vw;height:100vh;top:0;right:0;position:absolute;z-index:0;}
-        #container.view_roadview #mapWrapper {width: 50vw;}
-        #roadviewControl {position:absolute;top:5px;left:5px;width:42px;height:42px;z-index: 1;cursor: pointer; background: url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/common/img_search.png) 0 -450px no-repeat;}
-        #roadviewControl.active {background-position:0 -350px;}
-        #close {position: absolute;padding: 4px;top: 5px;left: 5px;cursor: pointer;background: #fff;border-radius: 4px;border: 1px solid #c8c8c8;box-shadow: 0px 1px #888;}
-        #close .img {display: block;background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/rv_close.png) no-repeat;width: 14px;height: 14px;}
+      .overlay_info {border-radius: 6px; margin-bottom: 12px; float:left;position: relative; border: 1px solid #ccc; border-bottom: 2px solid #ddd;background-color:#fff;}
+      .overlay_info:nth-of-type(n) {border:0; box-shadow: 0px 1px 2px #888;}
+      .overlay_info a {display: block; background: #d95050; background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center; text-decoration: none; color: #fff; padding:12px 36px 12px 14px; font-size: 14px; border-radius: 6px 6px 0 0}
+      .overlay_info a strong {background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/place_icon.png) no-repeat; padding-left: 27px;}
+      .overlay_info .desc {padding:14px;position: relative; min-width: 190px; height: 56px}
+      .overlay_info img {vertical-align: top;}
+      .overlay_info .address {font-size: 12px; color: #333; position: absolute; left: 80px; right: 14px; top: 24px; white-space: normal}
+      .overlay_info:after {content:'';position: absolute; margin-left: -11px; left: 50%; bottom: -12px; width: 22px; height: 12px; background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png) no-repeat 0 bottom;}
+      #roadviewControl.active {background-position:0 -350px;}
+      #close {position: absolute;padding: 4px;top: 5px;left: 5px;cursor: pointer;background: #fff;border-radius: 4px;border: 1px solid #c8c8c8;box-shadow: 0px 1px #888;}
+      #close .img {display: block;background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/rv_close.png) no-repeat;width: 14px;height: 14px;}
+      #container {overflow:hidden;height:93vh;position:relative;}
+      #mapWrapper {width:100%;height:100vh;z-index:1;}
+      #rvWrapper {width:50%;height:100vh;top:0;right:0;position:absolute;z-index:0;}
+      #container.view_roadview #mapWrapper {width: 50%;}
+      #roadviewControl {position:absolute;top:5px;left:5px;width:42px;height:42px;z-index: 1;cursor: pointer; background: url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/common/img_search.png) 0 -450px no-repeat;}
     </style>
 
-</head>
-<body>
-
-    <div class="menucontainer" style="display: flex">
-
-        <div class="header">
-
-        </div>
-
-        <div class="menu">
-            <div class="container-fluid">
-                <div id="header1" class="row">
-                    <div class="col-md-12">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#"><i class="fa-solid fa-sign-hanging"></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#"><i class="fa-solid fa-house"></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa-solid fa-building"></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#"><i class="fa-solid fa-gavel"></i></a>
-                            </li>
-                            <li class="nav-item dropdown ml-md-auto">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"><i class="fa-solid fa-user"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">내 정보</a>
-                                    <a class="dropdown-item" href="#">회원정보 수집</a>
-                                    <a class="dropdown-item" href="#">찜 목록(관심정보 목록)</a>
-                                    <div class="dropdown-divider">
-                                    </div> <a class="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div id="header2" class="row">
-                    <div class="col-md-12">
-                        <h3>
-                            안녕하세요!
-                            <div>
-                                상가쇼핑을 시작해보죠!
-                            </div>
-                        </h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5 mt-3">
-
-                        <button type="button" class="btn btn-indigo">
-                            로그인
-                        </button>
-
-                    </div>
-                    <div class="col-md-5 mt-3">
-
-                        <button type="button" class="btn btn-reverse-indigo">
-                            회원가입
-                        </button>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 mt-3 mb-3">
-                        <h3>
-                            문의
-                        </h3>
-                        <div class="row">
-
-                            <div class="col-md-6 mt-3 mb-3">
-                                <a href="#">
-                                    <div><i class="fa-solid fa-pen-nib"></i></div>
-                                    <div>문의하기</div>
-                                </a>
-                            </div>
-
-                            <div class="col-md-6 mt-3 mb-3">
-                                <a href="#">
-                                    <div><i class="fa-solid fa-question"></i></div>
-                                    <div>자주 묻는 질문</div>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>
-                            포스트
-                        </h3>
-                        <div class="row">
-
-                            <div class="col-md-4 mt-3 mb-3">
-                                <a href="#">
-                                    <div><i class="fa-solid fa-chart-pie"></i></div>
-                                    <div>Big-data</div>
-                                </a>
-                            </div>
-
-                            <div class="col-md-4 mt-3 mb-3">
-                                <a href="#">
-                                    <div><i class="fa-solid fa-newspaper"></i></div>
-                                    <div>뉴스</div>
-                                </a>
-                            </div>
-
-                            <div class="col-md-4 mt-3 mb-3">
-                                <a href="#">
-                                    <div><i class="fa-solid fa-magnifying-glass"></i></div>
-                                    <div>정책정보</div>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>
-                            약관
-                        </h3>
-                        <ul>
-                            <li class="list-item">
-                                <span>서비스 이용 약관</span>
-                            </li>
-                            <li class="list-item">
-                                <span>위치 기반 서비스 이용 약관</span>
-                            </li>
-                            <li class="list-item">
-                                <span>개인 정보 처리 방침</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="map">
-
-            <div id="container">
-                <div id="rvWrapper">
-                    <div id="roadview" style="width:1500px;height:1000px;"></div> <!-- 로드뷰를 표시할 div 입니다 -->
-                    <div id="close" title="로드뷰닫기" onclick="closeRoadview()"><span class="img"></span></div>
-                </div>
-                <div id="mapWrapper">
-                    <div id="map" style="width:1500px;height:1000px"></div> <!-- 지도를 표시할 div 입니다 -->
-                    <div id="roadviewControl" onclick="setRoadviewRoad()"></div>
-                </div>
-            </div>
-
-            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=22ba7b17e2b06e0bb41dd31e0cf7b3a5"></script>
-            <script>
-
-                var overlayOn = false, // 지도 위에 로드뷰 오버레이가 추가된 상태를 가지고 있을 변수
-                    container = document.getElementById('container'), // 지도와 로드뷰를 감싸고 있는 div 입니다
-                    mapWrapper = document.getElementById('mapWrapper'), // 지도를 감싸고 있는 div 입니다
-                    mapContainer = document.getElementById('map'), // 지도를 표시할 div 입니다
-                    rvContainer = document.getElementById('roadview'); //로드뷰를 표시할 div 입니다
-
-                var mapCenter = new kakao.maps.LatLng(35.1468849 , 126.8409538), // 지도의 중심좌표
-                    mapOption = {
-                        center: mapCenter, // 지도의 중심좌표
-                        level: 5 // 지도의 확대 레벨
-                    };
-
-                // 지도를 표시할 div와 지도 옵션으로 지도를 생성합니다
-                var map = new kakao.maps.Map(mapContainer, mapOption);
-
-                // 로드뷰 객체를 생성합니다
-                var rv = new kakao.maps.Roadview(rvContainer);
-
-                // 좌표로부터 로드뷰 파노라마 ID를 가져올 로드뷰 클라이언트 객체를 생성합니다
-                var rvClient = new kakao.maps.RoadviewClient();
-
-                // 로드뷰에 좌표가 바뀌었을 때 발생하는 이벤트를 등록합니다
-                kakao.maps.event.addListener(rv, 'position_changed', function() {
-
-                    // 현재 로드뷰의 위치 좌표를 얻어옵니다
-                    var rvPosition = rv.getPosition();
-
-                    // 지도의 중심을 현재 로드뷰의 위치로 설정합니다
-                    maptest.setCenter(rvPosition);
-
-                    // 지도 위에 로드뷰 도로 오버레이가 추가된 상태이면
-                    if(overlayOn) {
-                        // 마커의 위치를 현재 로드뷰의 위치로 설정합니다
-                        marker.setPosition(rvPosition);
-                    }
-                });
-
-                // 마커 이미지를 생성합니다
-                var markImage = new kakao.maps.MarkerImage(
-                    'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png',
-                    new kakao.maps.Size(26, 46),
-                    {
-                        // 스프라이트 이미지를 사용합니다.
-                        // 스프라이트 이미지 전체의 크기를 지정하고
-                        spriteSize: new kakao.maps.Size(1666, 168),
-                        // 사용하고 싶은 영역의 좌상단 좌표를 입력합니다.
-                        // background-position으로 지정하는 값이며 부호는 반대입니다.
-                        spriteOrigin: new kakao.maps.Point(705, 114),
-                        offset: new kakao.maps.Point(13, 46)
-                    }
-                );
-
-                // 드래그가 가능한 마커를 생성합니다
-                var marker = new kakao.maps.Marker({
-                    image : markImage,
-                    position: mapCenter,
-                    draggable: true
-                });
-
-                // 마커에 dragend 이벤트를 등록합니다
-                kakao.maps.event.addListener(marker, 'dragend', function(mouseEvent) {
-
-                    // 현재 마커가 놓인 자리의 좌표입니다
-                    var position = marker.getPosition();
-
-                    // 마커가 놓인 위치를 기준으로 로드뷰를 설정합니다
-                    toggleRoadview(position);
-                });
-
-                //지도에 클릭 이벤트를 등록합니다
-                kakao.maps.event.addListener(maptest, 'click', function(mouseEvent){
-
-                    // 지도 위에 로드뷰 도로 오버레이가 추가된 상태가 아니면 클릭이벤트를 무시합니다
-                    if(!overlayOn) {
-                        return;
-                    }
-
-                    // 클릭한 위치의 좌표입니다
-                    var position = mouseEvent.latLng;
-
-                    // 마커를 클릭한 위치로 옮깁니다
-                    marker.setPosition(position);
-
-                    // 클락한 위치를 기준으로 로드뷰를 설정합니다
-                    toggleRoadview(position);
-                });
-
-                // 전달받은 좌표(position)에 가까운 로드뷰의 파노라마 ID를 추출하여
-                // 로드뷰를 설정하는 함수입니다
-                function toggleRoadview(position){
-                    rvClient.getNearestPanoId(position, 50, function(panoId) {
-                        // 파노라마 ID가 null 이면 로드뷰를 숨깁니다
-                        if (panoId === null) {
-                            toggleMapWrapper(true, position);
-                        } else {
-                            toggleMapWrapper(false, position);
-
-                            // panoId로 로드뷰를 설정합니다
-                            rv.setPanoId(panoId, position);
-                        }
-                    });
-                }
-
-                // 지도를 감싸고 있는 div의 크기를 조정하는 함수입니다
-                function toggleMapWrapper(active, position) {
-                    if (active) {
-
-                        // 지도를 감싸고 있는 div의 너비가 100%가 되도록 class를 변경합니다
-                        container.className = '';
-
-                        // 지도의 크기가 변경되었기 때문에 relayout 함수를 호출합니다
-                        maptest.relayout();
-
-                        // 지도의 너비가 변경될 때 지도중심을 입력받은 위치(position)로 설정합니다
-                        maptest.setCenter(position);
-                    } else {
-
-                        // 지도만 보여지고 있는 상태이면 지도의 너비가 50%가 되도록 class를 변경하여
-                        // 로드뷰가 함께 표시되게 합니다
-                        if (container.className.indexOf('view_roadview') === -1) {
-                            container.className = 'view_roadview';
-
-                            // 지도의 크기가 변경되었기 때문에 relayout 함수를 호출합니다
-                            maptest.relayout();
-
-                            // 지도의 너비가 변경될 때 지도중심을 입력받은 위치(position)로 설정합니다
-                            maptest.setCenter(position);
-                        }
-                    }
-                }
-
-                // 지도 위의 로드뷰 도로 오버레이를 추가,제거하는 함수입니다
-                function toggleOverlay(active) {
-                    if (active) {
-                        overlayOn = true;
-
-                        // 지도 위에 로드뷰 도로 오버레이를 추가합니다
-                        maptest.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-
-                        // 지도 위에 마커를 표시합니다
-                        marker.setMap(maptest);
-
-                        // 마커의 위치를 지도 중심으로 설정합니다
-                        marker.setPosition(maptest.getCenter());
-
-                        // 로드뷰의 위치를 지도 중심으로 설정합니다
-                        toggleRoadview(maptest.getCenter());
-                    } else {
-                        overlayOn = false;
-
-                        // 지도 위의 로드뷰 도로 오버레이를 제거합니다
-                        maptest.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-
-                        // 지도 위의 마커를 제거합니다
-                        marker.setMap(null);
-                    }
-                }
-
-                // 지도 위의 로드뷰 버튼을 눌렀을 때 호출되는 함수입니다
-                function setRoadviewRoad() {
-                    var control = document.getElementById('roadviewControl');
-
-                    // 버튼이 눌린 상태가 아니면
-                    if (control.className.indexOf('active') === -1) {
-                        control.className = 'active';
-
-                        // 로드뷰 도로 오버레이가 보이게 합니다
-                        toggleOverlay(true);
-                    } else {
-                        control.className = '';
-
-                        // 로드뷰 도로 오버레이를 제거합니다
-                        toggleOverlay(false);
-                    }
-                }
-
-                // 로드뷰에서 X버튼을 눌렀을 때 로드뷰를 지도 뒤로 숨기는 함수입니다
-                function closeRoadview() {
-                    var position = marker.getPosition();
-                    toggleMapWrapper(true, position);
-                }
-
-                // 현재 지도에 트래픽을 표현하는 함수입니다.
-                maptest.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-
-
-                // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
-                if (navigator.geolocation) {
-
-                    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-                    navigator.geolocation.getCurrentPosition(function(position) {
-
-                        var lat = position.coords.latitude, // 위도
-                            lon = position.coords.longitude; // 경도
-
-                        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                            message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
-
-                        // 마커와 인포윈도우를 표시합니다
-                        displayMarker(locPosition, message);
-
-                    });
-
-                } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-
-                    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
-                        message = 'geolocation을 사용할수 없어요..'
-
-                    displayMarker(locPosition, message);
-                }
-
-                // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-                function displayMarker(locPosition, message) {
-
-                    // 마커를 생성합니다
-                    var marker = new kakao.maps.Marker({
-                        map: maptest,
-                        position: locPosition
-                    });
-
-                    var iwContent = message, // 인포윈도우에 표시할 내용
-                        iwRemoveable = true;
-
-                    // 인포윈도우를 생성합니다
-                    var infowindow = new kakao.maps.InfoWindow({
-                        content : iwContent,
-                        removable : iwRemoveable
-                    });
-
-                    // 인포윈도우를 마커위에 표시합니다
-                    infowindow.open(maptest, marker);
-
-                    // 지도 중심좌표를 접속위치로 변경합니다
-                    maptest.setCenter(locPosition);
-                }
-
-            </script>
+  </head>
+  <body>
+
+    <div th:replace="/header.html"></div>
+
+    <main role="main" class="probootstrap-main js-probootstrap-main">
+      <div class="probootstrap-bar">
+        <a href="#" class="probootstrap-toggle js-probootstrap-toggle"><span class="oi oi-menu"></span></a>
+        <div class="probootstrap-main-site-logo"><a href="../../../../../../Downloads/aside-master/aside-master/index.html">Aside</a></a></div>
+      </div>
+
+        <div id="container">
+          <div id="rvWrapper">
+            <div id="roadview" style="width:100%;height:100%;"></div> <!-- 로드뷰를 표시할 div 입니다 -->
+            <div id="close" title="로드뷰닫기" onclick="closeRoadview()"><span class="img"></span></div>
+          </div>
+          <div id="mapWrapper">
+            <div id="map" style="width:100%;height:100%"></div> <!-- 지도를 표시할 div 입니다 -->
+            <div id="roadviewControl" onclick="setRoadviewRoad()"></div>
+          </div>
+          <div hidden th:each="re_i:${re_list}" th:class="building"> <!-- 상가 id를 표시하기위한 div 입니다 -->
+            <div th:id="'re_Lat'+${re_i.getRe_id()}" th:text="${re_i.getLat()}"></div>
+            <div th:id="'re_Lng'+${re_i.getRe_id()}" th:text="${re_i.getLng()}"></div>
+            <div th:id="'re_jibun'+${re_i.getRe_id()}" th:text="${re_i.getRe_jibun()}"></div>
+            <div th:id="'re_name'+${re_i.getRe_id()}" th:text="${re_i.getRe_name()}"></div>
+          </div>
         </div>
 
 
-        <div class="footer">
 
-        </div>
+      <script src="/js/jquery-3.2.1.slim.min.js"></script>
+      <script src="/js/popper.min.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <script src="/js/owl.carousel.min.js"></script>
+      <script src="/js/jquery.waypoints.min.js"></script>
+      <script src="/js/imagesloaded.pkgd.min.js"></script>
+      <script src="/js/main.js"></script>
+      <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=22ba7b17e2b06e0bb41dd31e0cf7b3a5"></script>
+
+      <script>
+        <!-- Map START -->
+        var overlayOn = false, // 지도 위에 로드뷰 오버레이가 추가된 상태를 가지고 있을 변수
+                container = document.getElementById('container'), // 지도와 로드뷰를 감싸고 있는 div 입니다
+                mapWrapper = document.getElementById('mapWrapper'), // 지도를 감싸고 있는 div 입니다
+                mapContainer = document.getElementById('map'), // 지도를 표시할 div 입니다
+                rvContainer = document.getElementById('roadview'); //로드뷰를 표시할 div 입니다
+
+        var rv = new kakao.maps.Roadview(rvContainer); //로드뷰 객체
+        var rvClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+        var mapCenter = new kakao.maps.LatLng(35.132200, 126.854400), // 지도의 중심좌표
+                mapOption = {
+                  center: mapCenter, // 지도의 중심좌표
+                  level: 4 // 지도의 확대 레벨
+                };
+
+        // 지도를 표시할 div와 지도 옵션으로 지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        var re_max = 3 // 추후 id의 개수에 따라 바꿔줄 것.
 
 
-    </div>
+
+        // 커스텀 오버레이에 표시할 내용입니다
+        // HTML 문자열 또는 Dom Element 입니다
+        var content = `<div class="overlay_info">
+                            <a href="https://place.map.kakao.com/17600274" target="_blank"><strong></strong></a>
+                            <div class="desc">
+                                <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/place_thumb.png" alt="사진">
+                                <span class="address">지번</span>
+                            </div>
+                        </div>`;
+
+        var content2 = '<div class="overlay_info">';
+        content2 += '    <a href="https://place.map.kakao.com/17600274" target="_blank"><strong>제목2</strong></a>';
+        content2 += '    <div class="desc">';
+        content2 += '        <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/place_thumb.png" alt="사진">';
+        content2 += '        <span class="address">지번2</span>';
+        content2 += '    </div>';
+        content2 += '</div>';
+
+        // 커스텀 오버레이가 표시될 위치입니다
+        var position = new kakao.maps.LatLng(35.1346954, 126.8596708);
+        var position2 = new kakao.maps.LatLng(35.1399954, 126.8615721);
+
+        // 커스텀 오버레이를 생성합니다
+        var mapCustomOverlay = new kakao.maps.CustomOverlay({
+          position: position,
+          content: content,
+          xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+          yAnchor: 1.1 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+        });
+
+        var mapCustomOverlay2 = new kakao.maps.CustomOverlay({
+          position: position2,
+          content: content2,
+          xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+          yAnchor: 1.1 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+        });
+
+        // 커스텀 오버레이를 지도에 표시합니다
+        mapCustomOverlay.setMap(map);
+        mapCustomOverlay2.setMap(map);
 
 
+        //지도의 중심좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+        rvClient.getNearestPanoId(mapCenter, 50, function(panoId) {
+          rv.setPanoId(panoId, mapCenter); //panoId와 중심좌표를 통해 로드뷰 실행
+        });
+
+        // 지도에 교통정보를 표시하도록 지도타입을 추가합니다
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+
+        // 로드뷰 객체를 생성합니다
+        var rv = new kakao.maps.Roadview(rvContainer);
+
+        // 좌표로부터 로드뷰 파노라마 ID를 가져올 로드뷰 클라이언트 객체를 생성합니다
+        var rvClient = new kakao.maps.RoadviewClient();
 
 
-</div>
+        // 로드뷰에 좌표가 바뀌었을 때 발생하는 이벤트를 등록합니다
+        kakao.maps.event.addListener(rv, 'position_changed', function() {
+          var rvPosition = rv.getPosition();            // 현재 로드뷰의 위치 좌표를 얻어옵니다
+          map.setCenter(rvPosition);                    // 지도의 중심을 현재 로드뷰의 위치로 설정합니다
+          if(overlayOn) {                               // 지도 위에 로드뷰 도로 오버레이가 추가된 상태이면
+            marker.setPosition(rvPosition);             // 마커의 위치를 현재 로드뷰의 위치로 설정합니다
+          }
+
+          // 커스텀 오버레이를 생성합니다
+          var rvCustomOverlay = new kakao.maps.CustomOverlay({
+            position: position,
+            content: content,
+            xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+            yAnchor: 0.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+          });
+
+          var rvCustomOverlay2 = new kakao.maps.CustomOverlay({
+            position: position2,
+            content: content2,
+            xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+            yAnchor: 0.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+          });
+
+          rvCustomOverlay.setAltitude(10); //커스텀 오버레이의 고도값을 설정합니다.(로드뷰 화면 중앙이 0입니다)
+          rvCustomOverlay.setMap(rv);
+          rvCustomOverlay2.setAltitude(10); //커스텀 오버레이의 고도값을 설정합니다.(로드뷰 화면 중앙이 0입니다)
+          rvCustomOverlay2.setMap(rv);
+
+          var projection = rv.getProjection(); // viewpoint(화면좌표)값을 추출할 수 있는 projection 객체를 가져옵니다.
+
+          // 커스텀오버레이의 position과 altitude값을 통해 viewpoint값(화면좌표)를 추출합니다.
+          var viewpoint = projection.viewpointFromCoords(rvCustomOverlay.getPosition(), rvCustomOverlay.getAltitude());
+        });
+
+
+        // 마커 이미지를 생성합니다
+        var markImage = new kakao.maps.MarkerImage(
+                'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png',
+                new kakao.maps.Size(26, 46),
+                {
+                  // 스프라이트 이미지를 사용합니다.
+                  // 스프라이트 이미지 전체의 크기를 지정하고
+                  spriteSize: new kakao.maps.Size(1666, 168),
+                  // 사용하고 싶은 영역의 좌상단 좌표를 입력합니다.
+                  // background-position으로 지정하는 값이며 부호는 반대입니다.
+                  spriteOrigin: new kakao.maps.Point(705, 114),
+                  offset: new kakao.maps.Point(13, 46)
+                }
+        );
+
+
+        // 드래그가 가능한 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+          image : markImage,
+          position: mapCenter,
+          draggable: true
+        });
+
+
+        // 마커에 dragend 이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'dragend', function(mouseEvent) {
+          var position = marker.getPosition();          // 현재 마커가 놓인 자리의 좌표입니다
+          toggleRoadview(position);                     // 마커가 놓인 위치를 기준으로 로드뷰를 설정합니다
+        });
+
+
+        //지도에 클릭 이벤트를 등록합니다
+        kakao.maps.event.addListener(map, 'click', function(mouseEvent){
+          // 지도 위에 로드뷰 도로 오버레이가 추가된 상태가 아니면 클릭이벤트를 무시합니다
+          if(!overlayOn) {return;}
+          var position = mouseEvent.latLng;        // 클릭한 위치의 좌표입니다
+          console.log(position)
+          marker.setPosition(position);            // 마커를 클릭한 위치로 옮깁니다
+          toggleRoadview(position);                // 클락한 위치를 기준으로 로드뷰를 설정합니다
+        });
+
+
+        // 전달받은 좌표(position)에 가까운 로드뷰의 파노라마 ID를 추출하여
+        // 로드뷰를 설정하는 함수입니다
+        function toggleRoadview(position){
+          rvClient.getNearestPanoId(position, 50, function(panoId) {
+            // 파노라마 ID가 null 이면 로드뷰를 숨깁니다
+            if (panoId === null) {
+              toggleMapWrapper(true, position);
+            } else {
+              toggleMapWrapper(false, position);
+              // panoId로 로드뷰를 설정합니다
+              rv.setPanoId(panoId, position);
+            }
+          });
+        }
+
+
+        // 지도를 감싸고 있는 div의 크기를 조정하는 함수입니다
+        function toggleMapWrapper(active, position) {
+          if (active) {
+            container.className = '';       // 지도를 감싸고 있는 div의 너비가 100%가 되도록 class를 변경합니다
+            map.relayout();                 // 지도의 크기가 변경되었기 때문에 relayout 함수를 호출합니다
+            map.setCenter(position);        // 지도의 너비가 변경될 때 지도중심을 입력받은 위치(position)로 설정합니다
+          } else {
+            // 지도만 보여지고 있는 상태이면 지도의 너비가 50%가 되도록 class를 변경하여
+            // 로드뷰가 함께 표시되게 합니다
+            if (container.className.indexOf('view_roadview') === -1) {
+              container.className = 'view_roadview';
+              map.relayout();               // 지도의 크기가 변경되었기 때문에 relayout 함수를 호출합니다
+              map.setCenter(position);      // 지도의 너비가 변경될 때 지도중심을 입력받은 위치(position)로 설정합니다
+            }
+          }
+        }
+
+
+        // 지도 위의 로드뷰 도로 오버레이를 추가,제거하는 함수입니다
+        function toggleOverlay(active) {
+          if (active) {
+            overlayOn = true;
+            map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);     // 지도 위에 로드뷰 도로 오버레이를 추가합니다
+            marker.setMap(map);                                         // 지도 위에 마커를 표시합니다
+            marker.setPosition(map.getCenter());                        // 마커의 위치를 지도 중심으로 설정합니다
+            toggleRoadview(map.getCenter());                            // 로드뷰의 위치를 지도 중심으로 설정합니다
+          } else {
+            overlayOn = false;
+            map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);  // 지도 위의 로드뷰 도로 오버레이를 제거합니다
+            marker.setMap(null);                                        // 지도 위의 마커를 제거합니다
+          }
+        }
+
+
+        // 지도 위의 로드뷰 버튼을 눌렀을 때 호출되는 함수입니다
+        function setRoadviewRoad() {
+          var control = document.getElementById('roadviewControl');
+          // 버튼이 눌린 상태가 아니면
+          if (control.className.indexOf('active') === -1) {
+            control.className = 'active';
+            toggleOverlay(true);// 로드뷰 도로 오버레이가 보이게 합니다
+          } else {
+            control.className = '';
+            toggleOverlay(false);// 로드뷰 도로 오버레이를 제거합니다
+          }
+        }
+
+
+        // 로드뷰에서 X버튼을 눌렀을 때 로드뷰를 지도 뒤로 숨기는 함수입니다
+        function closeRoadview() {
+          var position = marker.getPosition();
+          toggleMapWrapper(true, position);
+        }
+      </script>
+
+    <div th:replace="/footer.html"></div>
+
+    </main>
+
 </body>
 </html>
