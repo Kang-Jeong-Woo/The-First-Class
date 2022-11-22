@@ -31,8 +31,14 @@
     </div>
 
     <div id="container">
+        <div id="rvWrapper">
+            <div id="roadview"></div> <!-- 로드뷰를 표시할 div 입니다 -->
+            <div id="close" title="로드뷰닫기" onclick="closeRoadview()"><span class="img"></span></div>
+            <div id="chkUseDistrict" ></div>
+        </div>
         <div id="mapWrapper">
             <div id="map"></div> <!-- 지도를 표시할 div 입니다 -->
+            <div id="roadviewControl" onclick="setRoadviewRoad()"></div>
         </div>
     </div>
 
@@ -48,36 +54,47 @@
 
     <script>
         <!-- Map START -->
-        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        var overlayOn = false, // 지도 위에 로드뷰 오버레이가 추가된 상태를 가지고 있을 변수
+            container = document.getElementById('container'), // 지도와 로드뷰를 감싸고 있는 div 입니다
+            mapWrapper = document.getElementById('mapWrapper'), // 지도를 감싸고 있는 div 입니다
+            mapContainer = document.getElementById('map'), // 지도를 표시할 div 입니다
+            rvContainer = document.getElementById('roadview'), //로드뷰를 표시할 div 입니다
             mapOption = {
                 center: new kakao.maps.LatLng(35.132299, 126.854499), // 지도의 중심좌표
                 level: 3 // 지도의 확대 레벨
-            };
+            }
 
         // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
         var map = new kakao.maps.Map(mapContainer, mapOption);
 
+        // 로드뷰 객체를 생성합니다
+        var rv = new kakao.maps.Roadview(rvContainer);
+
+        // 좌표로부터 로드뷰 파노라마 ID를 가져올 로드뷰 클라이언트 객체를 생성합니다
+        var rvClient = new kakao.maps.RoadviewClient();
+
+        // 지도 level에 따른 범위를 설정할 hashmap data입니다.
+        let testData = {
+            1: 0.5, 2: 0.5, 3: 0.5, 4: 0.5, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0
+        }
 
         // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
         kakao.maps.event.addListener(map, 'dragend', function() {
 
-            // 지도 중심좌표를 얻어옵니다
+            // 지도 중심좌표를 얻어오고 해당하는 위도(lat), 경도(lng)를 얻어옵니다.
             var latlng = map.getCenter();
             var map_lat = latlng.getLat();
             var map_lng = latlng.getLng();
-            console.log(map_lng);
-            console.log(map_lat);
 
             // 중심좌표 controller에 보내기
             $.ajax({
                 type: 'GET',
                 url : 'getRe.do',
-                data : {'lat' : map_lat, 'lng' : map_lng},
+                data : {'lat' : map_lat, 'lng' : map_lng, 'level':testData[mapOption.level]},
                 dataType : 'JSON',
                 success : function (res){
                     $.each(res, function (i, relEs){
-                        console.log(relEs.lat);
-                        console.log(relEs.lng);
+                        mkMapOverLay(relEs.re_name, relEs.re_jibun, relEs.lat, relEs.lng)
                     })
                 },
                 error : function (e){
@@ -85,6 +102,236 @@
                 }
             });
         });
+
+        // 로드뷰에 좌표가 바뀌었을 때 발생하는 이벤트를 등록합니다
+        kakao.maps.event.addListener(rv, 'position_changed', function() {
+            // 현재 로드뷰의 위치 좌표를 얻어옵니다
+            var rvPosition = rv.getPosition();
+            // 지도의 중심을 현재 로드뷰의 위치로 설정합니다
+            map.setCenter(rvPosition);
+            // 지도 위에 로드뷰 도로 오버레이가 추가된 상태이면
+            if(overlayOn) {
+                // 마커의 위치를 현재 로드뷰의 위치로 설정합니다
+                marker.setPosition(rvPosition);
+            }
+
+            // 지도 중심좌표를 얻어오고 해당하는 위도(lat), 경도(lng)를 얻어옵니다.
+            var latlng = map.getCenter();
+            var map_lat = latlng.getLat();
+            var map_lng = latlng.getLng();
+
+            // 중심좌표 controller에 보내기
+            $.ajax({
+                type: 'GET',
+                url : 'getRe.do',
+                data : {'lat' : map_lat, 'lng' : map_lng, 'level':testData[mapOption.level]},
+                dataType : 'JSON',
+                success : function (res){
+                    $.each(res, function (i, relEs){
+                        rvMapOverLay(relEs.re_name, relEs.re_jibun, relEs.lat, relEs.lng)
+                    })
+                },
+                error : function (e){
+                    console.log(e);
+                }
+            });
+        });
+
+
+
+        // 마커 이미지를 생성합니다
+        var markImage = new kakao.maps.MarkerImage(
+            'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png',
+            new kakao.maps.Size(26, 46),
+            {
+                // 스프라이트 이미지를 사용합니다.
+                // 스프라이트 이미지 전체의 크기를 지정하고
+                spriteSize: new kakao.maps.Size(1666, 168),
+                // 사용하고 싶은 영역의 좌상단 좌표를 입력합니다.
+                // background-position으로 지정하는 값이며 부호는 반대입니다.
+                spriteOrigin: new kakao.maps.Point(705, 114),
+                offset: new kakao.maps.Point(13, 46)
+            }
+        );
+
+        // 드래그가 가능한 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            image : markImage,
+            position: mapOption.center,
+            draggable: true
+        });
+
+        // 지도에 커스텀 오버레이를 만드는 함수입니다.
+        function mkMapOverLay(mkName, mkJibun, mkLat, mkLng){
+            // HTML 문자열 또는 Dom Element 입니다
+            var content = `<div class="overlay_info">
+                                <a href="https://place.map.kakao.com/17600274" target="_blank"><strong>${mkName}</strong></a>
+                                <div class="desc">
+                                    <img src="#" alt="사진">
+                                    <span class="address">${mkJibun}</span>
+                                </div>
+                            </div>`;
+            // 커스텀 오버레이가 표시될 위치입니다
+            var position = new kakao.maps.LatLng(mkLat, mkLng);
+
+            // 커스텀 오버레이를 생성합니다
+            var mapCustomOverlay = new kakao.maps.CustomOverlay({
+                position: position,
+                content: content,
+                xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+                yAnchor: 0.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+            });
+            // 커스텀 오버레이를 지도에 표시합니다
+            mapCustomOverlay.setMap(map);
+        }
+
+        // 로드뷰에 커스텀 오버레이를 만드는 함수입니다.
+        function rvMapOverLay(mkName, mkJibun, mkLat, mkLng){
+            // HTML 문자열 또는 Dom Element 입니다
+            var content = `<div class="overlay_info">
+                                <a href="https://place.map.kakao.com/17600274" target="_blank"><strong>${mkName}</strong></a>
+                                <div class="desc">
+                                    <img src="#" alt="사진">
+                                    <span class="address">${mkJibun}</span>
+                                </div>
+                            </div>`;
+            // 커스텀 오버레이가 표시될 위치입니다
+            var position = new kakao.maps.LatLng(mkLat, mkLng);
+
+            // 커스텀 오버레이를 생성합니다
+            var rvCustomOverlay = new kakao.maps.CustomOverlay({
+                position: position,
+                content: content,
+                xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+                yAnchor: 0.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+            });
+
+            // 커스텀 오버레이를 지도에 표시합니다
+            rvCustomOverlay.setAltitude(10); //커스텀 오버레이의 고도값을 설정합니다.(로드뷰 화면 중앙이 0입니다)
+            rvCustomOverlay.setMap(rv);
+        }
+
+        //지도에 클릭 이벤트를 등록합니다
+        kakao.maps.event.addListener(map, 'click', function(mouseEvent){
+            // 지도 위에 로드뷰 도로 오버레이가 추가된 상태가 아니면 클릭이벤트를 무시합니다
+            if(!overlayOn) { return; }
+            // 클릭한 위치의 좌표입니다
+            var position = mouseEvent.latLng;
+            // 마커를 클릭한 위치로 옮깁니다
+            marker.setPosition(position);
+            // 클락한 위치를 기준으로 로드뷰를 설정합니다
+            toggleRoadview(position);
+        });
+
+        // 전달받은 좌표(position)에 가까운 로드뷰의 파노라마 ID를 추출하여
+        // 로드뷰를 설정하는 함수입니다
+        function toggleRoadview(position){
+            rvClient.getNearestPanoId(position, 50, function(panoId) {
+                // 파노라마 ID가 null 이면 로드뷰를 숨깁니다
+                if (panoId === null) {
+                    toggleMapWrapper(true, position);
+                } else {
+                    toggleMapWrapper(false, position);
+                    // panoId로 로드뷰를 설정합니다
+                    rv.setPanoId(panoId, position);
+                }
+            });
+        }
+
+        // 마커에 dragend 이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'dragend', function(mouseEvent) {
+            // 현재 마커가 놓인 자리의 좌표입니다
+            var position = marker.getPosition();
+            // 마커가 놓인 위치를 기준으로 로드뷰를 설정합니다
+            toggleRoadview(position);
+        });
+
+        // 지도를 감싸고 있는 div의 크기를 조정하는 함수입니다
+        function toggleMapWrapper(active, position) {
+            if (active) {
+                // 지도를 감싸고 있는 div의 너비가 100%가 되도록 class를 변경합니다
+                container.className = '';
+                // 지도의 크기가 변경되었기 때문에 relayout 함수를 호출합니다
+                map.relayout();
+                // 지도의 너비가 변경될 때 지도중심을 입력받은 위치(position)로 설정합니다
+                map.setCenter(position);
+            } else {
+                // 지도만 보여지고 있는 상태이면 지도의 너비가 50%가 되도록 class를 변경하여
+                // 로드뷰가 함께 표시되게 합니다
+                if (container.className.indexOf('view_roadview') === -1) {
+                    container.className = 'view_roadview';
+                    // 지도의 크기가 변경되었기 때문에 relayout 함수를 호출합니다
+                    map.relayout();
+                    // 지도의 너비가 변경될 때 지도중심을 입력받은 위치(position)로 설정합니다
+                    map.setCenter(position);
+                }
+            }
+        }
+
+        // 지도 위의 로드뷰 도로 오버레이를 추가,제거하는 함수입니다
+        function toggleOverlay(active) {
+            if (active) {
+                overlayOn = true;
+                // 지도 위에 로드뷰 도로 오버레이를 추가합니다
+                map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+                // 지도 위에 마커를 표시합니다
+                marker.setMap(map);
+                // 마커의 위치를 지도 중심으로 설정합니다
+                marker.setPosition(map.getCenter());
+                // 로드뷰의 위치를 지도 중심으로 설정합니다
+                toggleRoadview(map.getCenter());
+            } else {
+                overlayOn = false;
+                // 지도 위의 로드뷰 도로 오버레이를 제거합니다
+                map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+                // 지도 위의 마커를 제거합니다
+                marker.setMap(null);
+            }
+        }
+
+        // 지도 위의 로드뷰 버튼을 눌렀을 때 호출되는 함수입니다
+        function setRoadviewRoad() {
+            var control = document.getElementById('roadviewControl');
+            // 버튼이 눌린 상태가 아니면
+            if (control.className.indexOf('active') === -1) {
+                control.className = 'active';
+                // 로드뷰 도로 오버레이가 보이게 합니다
+                toggleOverlay(true);
+            } else {
+                control.className = '';
+                // 로드뷰 도로 오버레이를 제거합니다
+                toggleOverlay(false);
+            }
+        }
+
+        // 로드뷰에서 X버튼을 눌렀을 때 로드뷰를 지도 뒤로 숨기는 함수입니다
+        function closeRoadview() {
+            var position = marker.getPosition();
+            toggleMapWrapper(true, position);
+        }
+
+        // 마커 클러스터러를 생성합니다
+        var clusterer = new kakao.maps.MarkerClusterer({
+            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+            averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+            minLevel: 3 // 클러스터 할 최소 지도 레벨
+        });
+
+        // 데이터를 가져오기 위해 jQuery를 사용합니다
+        // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
+        $.get("/positions.json", function(data) {
+            // 데이터에서 좌표 값을 가지고 마커를 표시합니다
+            // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
+            var markers = $(data.positions).map(function(i, position) {
+                return new kakao.maps.Marker({
+                    position : new kakao.maps.LatLng(position.lat, position.lng)
+                });
+            });
+
+            // 클러스터러에 마커들을 추가합니다
+            clusterer.addMarkers(markers);
+        });
+
 
     </script>
 

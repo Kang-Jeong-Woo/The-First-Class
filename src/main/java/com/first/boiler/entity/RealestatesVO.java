@@ -27,11 +27,11 @@ public class RealestatesVO {
     // 동
     private String re_dong;
 
-    // 가격
-    private Integer re_price;
+    // 면적
+    private String re_area;
 
     // 건축년도
-    private Integer re_year;
+    private String re_year;
 
     // 위도
     private Double lat;
@@ -40,7 +40,7 @@ public class RealestatesVO {
     private Double lng;
 
     // 등록 일자
-    private Date re_dt;
+    private String re_dt;
 
     // 회원 아이디
     private String mem_id;
@@ -53,4 +53,7 @@ public class RealestatesVO {
 
     // 매출액
     private String re_sales;
+
+    // 건축물 용도
+    private String re_usage;
 }

@@ -88,9 +88,8 @@ public class MemberController {
         return "main";
     }
     @GetMapping("getRe.do")
-    public @ResponseBody List<RealestatesVO> distanceCheck(float lat, float lng){
-        List<RealestatesVO> re_list = mapper.distanceCheck(lat, lng);
-        System.out.println(re_list);
+    public @ResponseBody List<RealestatesVO> distanceCheck(float lat, float lng, float level){
+        List<RealestatesVO> re_list = mapper.distanceCheck(lat, lng, level);
         return re_list;
     }
 }
