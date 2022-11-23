@@ -54,6 +54,7 @@
 
     <script>
         <!-- Map START -->
+        // 객체 선언 부
         var overlayOn = false, // 지도 위에 로드뷰 오버레이가 추가된 상태를 가지고 있을 변수
             container = document.getElementById('container'), // 지도와 로드뷰를 감싸고 있는 div 입니다
             mapWrapper = document.getElementById('mapWrapper'), // 지도를 감싸고 있는 div 입니다
@@ -61,7 +62,7 @@
             rvContainer = document.getElementById('roadview'), //로드뷰를 표시할 div 입니다
             mapOption = {
                 center: new kakao.maps.LatLng(35.132299, 126.854499), // 지도의 중심좌표
-                level: 3 // 지도의 확대 레벨
+                level: 1 // 지도의 확대 레벨
             }
 
         // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
@@ -75,8 +76,12 @@
 
         // 지도 level에 따른 범위를 설정할 hashmap data입니다.
         let testData = {
-            1: 0.5, 2: 0.5, 3: 0.5, 4: 0.5, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0
+            1: 0.14, 2: 0.21, 3: 0.3, 4: 0.0, 5: 0.0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0
         }
+
+        var imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+            imageOption = {offset: new kakao.maps.Point(27, 69)}, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'; // 마커이미지의 주소입니다
 
         // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
         kakao.maps.event.addListener(map, 'dragend', function() {
@@ -139,7 +144,7 @@
 
 
 
-        // 마커 이미지를 생성합니다
+        // 동글이 이미지를 생성합니다
         var markImage = new kakao.maps.MarkerImage(
             'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png',
             new kakao.maps.Size(26, 46),
@@ -154,61 +159,78 @@
             }
         );
 
-        // 드래그가 가능한 마커를 생성합니다
+        // 드래그가 가능한 동글이를 생성합니다
         var marker = new kakao.maps.Marker({
             image : markImage,
             position: mapOption.center,
             draggable: true
         });
 
-        // 지도에 커스텀 오버레이를 만드는 함수입니다.
-        function mkMapOverLay(mkName, mkJibun, mkLat, mkLng){
-            // HTML 문자열 또는 Dom Element 입니다
-            var content = `<div class="overlay_info">
-                                <a href="https://place.map.kakao.com/17600274" target="_blank"><strong>${mkName}</strong></a>
-                                <div class="desc">
-                                    <img src="#" alt="사진">
-                                    <span class="address">${mkJibun}</span>
-                                </div>
-                            </div>`;
+        // 로드뷰에 마커를 만드는 함수입니다.
+        function rvMapOverLay(mkName, mkJibun, mkLat, mkLng){
+            // 마커가 표시될 위치입니다
+            var position = new kakao.maps.LatLng(mkLat, mkLng);
+            // 마커의 이미지를 생성합니다.
+            // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            // 로드뷰에 올릴 마커를 생성합니다.
+            // var rMarker = new kakao.maps.Marker({
+            //     position: position,
+            //     map: rv, //map 대신 rv(로드뷰 객체)로 설정하면 로드뷰에 올라갑니다.
+            //     image:markerImage
+            // });
+            // 마커가 지도 위에 표시되도록 설정합니다
+            // marker.setMap(map);
+            // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            var content = `<div class="customoverlay">
+                            <a href="#" target="_blank">
+                            <span class="title">${mkName}</span>
+                            </a>
+                           </div>`;
             // 커스텀 오버레이가 표시될 위치입니다
             var position = new kakao.maps.LatLng(mkLat, mkLng);
-
             // 커스텀 오버레이를 생성합니다
-            var mapCustomOverlay = new kakao.maps.CustomOverlay({
+            var customOverlay = new kakao.maps.CustomOverlay({
+                map: map,
                 position: position,
                 content: content,
-                xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
-                yAnchor: 0.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+                yAnchor: 1
             });
-            // 커스텀 오버레이를 지도에 표시합니다
-            mapCustomOverlay.setMap(map);
+            customOverlay.setMap(rv);
+            // rMarker.setAltitude(10); //마커의 높이를 설정합니다. (단위는 m입니다.)
+            // rMarker.setRange(50); //마커가 보일 수 있는 범위를 설정합니다. (단위는 m입니다.)
+            customOverlay.setRange(100);
+            customOverlay.setAltitude(5);
         }
 
-        // 로드뷰에 커스텀 오버레이를 만드는 함수입니다.
-        function rvMapOverLay(mkName, mkJibun, mkLat, mkLng){
-            // HTML 문자열 또는 Dom Element 입니다
-            var content = `<div class="overlay_info">
-                                <a href="https://place.map.kakao.com/17600274" target="_blank"><strong>${mkName}</strong></a>
-                                <div class="desc">
-                                    <img src="#" alt="사진">
-                                    <span class="address">${mkJibun}</span>
-                                </div>
-                            </div>`;
+        // 지도에 마커를 만드는 함수입니다.
+        function mkMapOverLay(mkName, mkJibun, mkLat, mkLng){
+            // 마커의 이미지를 생성합니다.
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            // 마커 표시될 위치입니다
+            var position = new kakao.maps.LatLng(mkLat, mkLng);
+            // 마커를 생성합니다
+            var mMarker = new kakao.maps.Marker({
+                position: position,
+                map:map,
+                image:markerImage
+            });
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+            // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            var content = `<div class="customoverlay">
+                            <a href="#" target="_blank">
+                            <span class="title">${mkName}</span>
+                            </a>
+                           </div>`;
             // 커스텀 오버레이가 표시될 위치입니다
             var position = new kakao.maps.LatLng(mkLat, mkLng);
-
             // 커스텀 오버레이를 생성합니다
-            var rvCustomOverlay = new kakao.maps.CustomOverlay({
+            var customOverlay = new kakao.maps.CustomOverlay({
+                map: map,
                 position: position,
                 content: content,
-                xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
-                yAnchor: 0.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+                yAnchor: 1
             });
-
-            // 커스텀 오버레이를 지도에 표시합니다
-            rvCustomOverlay.setAltitude(10); //커스텀 오버레이의 고도값을 설정합니다.(로드뷰 화면 중앙이 0입니다)
-            rvCustomOverlay.setMap(rv);
         }
 
         //지도에 클릭 이벤트를 등록합니다
@@ -238,7 +260,7 @@
             });
         }
 
-        // 마커에 dragend 이벤트를 등록합니다
+        // 동글이에 dragend 이벤트를 등록합니다
         kakao.maps.event.addListener(marker, 'dragend', function(mouseEvent) {
             // 현재 마커가 놓인 자리의 좌표입니다
             var position = marker.getPosition();
@@ -268,7 +290,7 @@
             }
         }
 
-        // 지도 위의 로드뷰 도로 오버레이를 추가,제거하는 함수입니다
+        // 지도 위의 로드뷰 도로 오버레이를 추가,제거하는 함수입니다 => 여기에 각종 지도를 넣어보기...?
         function toggleOverlay(active) {
             if (active) {
                 overlayOn = true;
@@ -310,27 +332,38 @@
             toggleMapWrapper(true, position);
         }
 
-        // 마커 클러스터러를 생성합니다
-        var clusterer = new kakao.maps.MarkerClusterer({
-            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-            averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-            minLevel: 3 // 클러스터 할 최소 지도 레벨
-        });
-
-        // 데이터를 가져오기 위해 jQuery를 사용합니다
-        // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
-        $.get("/positions.json", function(data) {
-            // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-            // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
-            var markers = $(data.positions).map(function(i, position) {
-                return new kakao.maps.Marker({
-                    position : new kakao.maps.LatLng(position.lat, position.lng)
-                });
-            });
-
-            // 클러스터러에 마커들을 추가합니다
-            clusterer.addMarkers(markers);
-        });
+        // // 클러스터러를 생성합니다
+        // var clusterer = new kakao.maps.MarkerClusterer({
+        //     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+        //     averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+        //     minLevel: 3 // 클러스터 할 최소 지도 레벨
+        // });
+        //
+        // // 데이터를 가져오기 위해 jQuery를 사용합니다
+        // // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
+        // $.get("/positions.json", function(data) {
+        //     // 데이터에서 좌표 값을 가지고 마커를 표시합니다
+        //     // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
+        //     var markers = $(data.positions).map(function(i, position) {
+        //         return new kakao.maps.Marker({
+        //             position : new kakao.maps.LatLng(position.lat, position.lng)
+        //         });
+        //     });
+        //     // 클러스터러에 마커들을 추가합니다
+        //     clusterer.addMarkers(markers);
+        // });
+        //
+        // // 마커 클러스터러에 클릭이벤트를 등록합니다
+        // // 마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
+        // // 이벤트 헨들러로 cluster 객체가 넘어오지 않을 수도 있습니다
+        // kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
+        //
+        //     // 현재 지도 레벨에서 1레벨 확대한 레벨
+        //     var level = map.getLevel()-1;
+        //
+        //     // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
+        //     map.setLevel(level, {anchor: cluster.getCenter()});
+        // });
 
 
     </script>
