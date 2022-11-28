@@ -24,6 +24,15 @@
 
 <div th:replace="/header.html"></div>
 
+<div class="remoteCon">
+    <p>
+        <div><input type="checkbox" id="chkUseDistrict" class="probootstrap-animate fadeInLeft probootstrap-animated" onclick="setOverlayMapTypeId()" value="지적편집도"/>지적편집도 보기</div>
+        <div><input type="checkbox" id="chkTerrain" class="probootstrap-animate fadeInLeft probootstrap-animated" onclick="setOverlayMapTypeId()" value="지형정보"/>지형정보 보기</div>
+        <div><input type="checkbox" id="chkTraffic" class="probootstrap-animate fadeInLeft probootstrap-animated" onclick="setOverlayMapTypeId()" value="실시간 교통정보"/>실시간 교통정보 보기</div>
+        <div><input type="checkbox" id="chkBicycle" class="probootstrap-animate fadeInLeft probootstrap-animated" onclick="setOverlayMapTypeId()" value="자전거 도로정도"/>자전거 도로정보 보기</div>
+    </p>
+</div>
+
 <main role="main" class="probootstrap-main js-probootstrap-main">
     <div class="probootstrap-bar">
         <a href="#" class="probootstrap-toggle js-probootstrap-toggle"><span class="oi oi-menu"></span></a>
@@ -34,7 +43,6 @@
         <div id="rvWrapper">
             <div id="roadview"></div> <!-- 로드뷰를 표시할 div 입니다 -->
             <div id="close" title="로드뷰닫기" onclick="closeRoadview()"><span class="img"></span></div>
-            <div id="chkUseDistrict" ></div>
         </div>
         <div id="mapWrapper">
             <div id="map"></div> <!-- 지도를 표시할 div 입니다 -->
@@ -75,43 +83,73 @@
         var rvClient = new kakao.maps.RoadviewClient();
 
         // 지도 level에 따른 범위를 설정할 hashmap data입니다.
-        let testData = {
+        let mapLevel = {
             1: 0.14, 2: 0.21, 3: 0.3, 4: 0.0, 5: 0.0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0
+        }
+
+        // layout 그림에 들어갈 카테고리별 img url들입니다.
+        let cateImg = {
+            a: '/img/aPoint.png', b: '/img/bPoint.png', c: '/img/cPoint.png', d: '/img/dPoint.png',
+            e: '/img/ePoint.png', f: '/img/fPoint.png', g: '/img/gPoint.png', h: '/img/hPoint.png',
+            i: '/img/iPoint.png', l: '/img/lPoint.png', m: '/img/mPoint.png', n: '/img/nPoint.png',
+            o: '/img/oPoint.png', p: '/img/pPoint.png', q: '/img/qPoint.png', r: '/img/rPoint.png',
+            s: '/img/sPoint.png', t: '/img/tPoint.png', u: '/img/uPoint.png', v: '/img/vPoint.png'
         }
 
         // 동동이를 초기화 하는 함수입니다.
         var mapWalker = null;
 
+        // 커스텀 오버레이를 초기화하는 함수입니다.
+        var customOverlay = null;
+
         // 마커 레이아웃을 표시하기위한 속성값 정의입니다
         var imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-            imageOption = {offset: new kakao.maps.Point(27, 69)}, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-            imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'; // 마커이미지의 주소입니다
+            imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        // // 동글이 이미지를 생성합니다
-        // var markImage = new kakao.maps.MarkerImage(
-        //     'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png',
-        //     new kakao.maps.Size(26, 46),
-        //     {
-        //         // 스프라이트 이미지를 사용합니다.
-        //         // 스프라이트 이미지 전체의 크기를 지정하고
-        //         spriteSize: new kakao.maps.Size(1666, 168),
-        //         // 사용하고 싶은 영역의 좌상단 좌표를 입력합니다.
-        //         // background-position으로 지정하는 값이며 부호는 반대입니다.
-        //         spriteOrigin: new kakao.maps.Point(705, 114),
-        //         offset: new kakao.maps.Point(13, 46)
-        //     }
-        // );
-        //
-        // // 드래그가 가능한 동글이를 생성합니다
-        // var marker = new kakao.maps.Marker({
-        //     image : markImage,
-        //     position: mapOption.center,
-        //     draggable: true
-        // });
+        // 지도 타입 정보를 가지고 있을 객체입니다   여기에 잠깐 https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png
+        // map.addOverlayMapTypeId 함수로 추가된 지도 타입은
+        // 가장 나중에 추가된 지도 타입이 가장 앞에 표시됩니다
+        // 이 예제에서는 지도 타입을 추가할 때 지적편집도, 지형정보, 교통정보, 자전거도로 정보 순으로 추가하므로
+        // 자전거 도로 정보가 가장 앞에 표시됩니다
+        var mapTypes = {
+            terrain : kakao.maps.MapTypeId.TERRAIN,
+            traffic :  kakao.maps.MapTypeId.TRAFFIC,
+            bicycle : kakao.maps.MapTypeId.BICYCLE,
+            useDistrict : kakao.maps.MapTypeId.USE_DISTRICT
+        };
+
 
 
 
         // 함수 선언 부
+        // 체크 박스를 선택하면 호출되는 함수입니다
+        function setOverlayMapTypeId() {
+            var chkTerrain = document.getElementById('chkTerrain'),
+                chkTraffic = document.getElementById('chkTraffic'),
+                chkBicycle = document.getElementById('chkBicycle'),
+                chkUseDistrict = document.getElementById('chkUseDistrict');
+            // 지도 타입을 제거합니다
+            for (var type in mapTypes) {
+                map.removeOverlayMapTypeId(mapTypes[type]);
+            }
+            // 지적편집도정보 체크박스가 체크되어있으면 지도에 지적편집도정보 지도타입을 추가합니다
+            if (chkUseDistrict.checked) {
+                map.addOverlayMapTypeId(mapTypes.useDistrict);
+            }
+            // 지형정보 체크박스가 체크되어있으면 지도에 지형정보 지도타입을 추가합니다
+            if (chkTerrain.checked) {
+                map.addOverlayMapTypeId(mapTypes.terrain);
+            }
+            // 교통정보 체크박스가 체크되어있으면 지도에 교통정보 지도타입을 추가합니다
+            if (chkTraffic.checked) {
+                map.addOverlayMapTypeId(mapTypes.traffic);
+            }
+            // 자전거도로정보 체크박스가 체크되어있으면 지도에 자전거도로정보 지도타입을 추가합니다
+            if (chkBicycle.checked) {
+                map.addOverlayMapTypeId(mapTypes.bicycle);
+            }
+        }
+
         //지도위에 현재 로드뷰의 위치와, 각도를 표시하기 위한 map walker 아이콘 생성 클래스
         function MapWalker(position){
             //커스텀 오버레이에 사용할 map walker 엘리먼트
@@ -160,25 +198,28 @@
         };
 
         // 로드뷰에 마커를 만드는 함수입니다.
-        function rvMapOverLay(mkName, mkJibun, mkLat, mkLng){
-            // 마커의 이미지를 생성합니다.
-            // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-            // 로드뷰에 올릴 마커를 생성합니다.
-            // var rMarker = new kakao.maps.Marker({
-            //     position: position,
-            //     map: rv, //map 대신 rv(로드뷰 객체)로 설정하면 로드뷰에 올라갑니다.
-            //     image:markerImage
-            // });
-            // 마커가 지도 위에 표시되도록 설정합니다
-            // marker.setMap(map);
-            // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-            var content = `<div class="customoverlay">
-                            <a href="#" target="_blank">
-                            <span class="title">${mkName}</span>
-                            </a>
-                           </div>`;
+        function rvMapOverLay(mkName, mkCategory, mkDeposit, mkrent, mkLat, mkLng){
             // 커스텀 오버레이가 표시될 위치입니다
             var position = new kakao.maps.LatLng(mkLat, mkLng);
+            // 마커이미지의 주소입니다
+            imageSrc = `${cateImg[mkCategory]}`;
+            // 마커의 이미지를 생성합니다.
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            // 로드뷰에 올릴 마커를 생성합니다.
+            var rMarker = new kakao.maps.Marker({
+                position: position,
+                map: rv, //map 대신 rv(로드뷰 객체)로 설정하면 로드뷰에 올라갑니다.
+                image:markerImage
+            });
+            // 마커가 지도 위에 표시되도록 설정합니다
+            rMarker.setMap(rv);
+            // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            var content = `<div class="customoverlay">
+                                <a href="#" target="_blank">
+                                    <span class="title">보증금 : ${mkDeposit}</span>
+                                    <span class="title">월세 : ${mkrent}</span>
+                                </a>
+                           </div>`;
             // 커스텀 오버레이를 생성합니다
             var customOverlay = new kakao.maps.CustomOverlay({
                 map: map,
@@ -187,14 +228,15 @@
                 yAnchor: 1
             });
             customOverlay.setMap(rv);
-            // rMarker.setAltitude(10); //마커의 높이를 설정합니다. (단위는 m입니다.)
-            // rMarker.setRange(50); //마커가 보일 수 있는 범위를 설정합니다. (단위는 m입니다.)
+            rMarker.setRange(50); //마커가 보일 수 있는 범위를 설정합니다. (단위는 m입니다.)
+            rMarker.setAltitude(1); //마커의 높이를 설정합니다. (단위는 m입니다.)
             customOverlay.setRange(50);
-            customOverlay.setAltitude(5);
+            customOverlay.setAltitude(3);
         }
 
         // 지도에 마커를 만드는 함수입니다.
-        function mkMapOverLay(mkName, mkJibun, mkLat, mkLng){
+        function mkMapOverLay(mkName, mkCategory, mkJibun, mkLat, mkLng){
+            imageSrc = `${cateImg[mkCategory]}`; // 마커이미지의 주소입니다
             // 마커의 이미지를 생성합니다.
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
             // 마커 표시될 위치입니다
@@ -209,9 +251,9 @@
             mMarker.setMap(map);
             // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
             var content = `<div class="customoverlay">
-                            <a href="#" target="_blank">
-                            <span class="title">${mkName}</span>
-                            </a>
+                                <a href="#" target="_blank">
+                                    <span class="title">${mkName}</span>
+                                </a>
                            </div>`;
             // 커스텀 오버레이가 표시될 위치입니다
             var position = new kakao.maps.LatLng(mkLat, mkLng);
@@ -318,11 +360,11 @@
             $.ajax({
                 type: 'GET',
                 url: 'getRe.do',
-                data: {'lat': map_lat, 'lng': map_lng, 'level': testData[mapOption.level]},
+                data: {'lat': map_lat, 'lng': map_lng, 'level': mapLevel[mapOption.level]},
                 dataType: 'JSON',
                 success: function (res) {
                     $.each(res, function (i, relEs) {
-                        mkMapOverLay(relEs.re_name, relEs.re_jibun, relEs.lat, relEs.lng)
+                        mkMapOverLay(relEs.re_name, relEs.re_categoy, relEs.re_jibun, relEs.lat, relEs.lng)
                     })
                 },
                 error: function (e) {
@@ -364,11 +406,11 @@
                 $.ajax({
                     type: 'GET',
                     url: 'getRe.do',
-                    data: {'lat': map_lat, 'lng': map_lng, 'level': testData[mapOption.level]},
+                    data: {'lat': map_lat, 'lng': map_lng, 'level': mapLevel[mapOption.level]},
                     dataType: 'JSON',
                     success: function (res) {
                         $.each(res, function (i, relEs) {
-                            rvMapOverLay(relEs.re_name, relEs.re_jibun, relEs.lat, relEs.lng)
+                            rvMapOverLay(relEs.re_name, relEs.re_categoy, relEs.re_deposit, relEs.re_rent, relEs.lat, relEs.lng)
                         })
                     },
                     error: function (e) {

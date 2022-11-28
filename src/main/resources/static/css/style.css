@@ -726,3 +726,16 @@ textarea {
 .MapWalker.m13 .angleBack {background-position: -522px -2px;}
 .MapWalker.m14 .angleBack {background-position: -626px -2px;}
 .MapWalker.m15 .angleBack {background-position: -730px -2px;}
+.remoteCon {
+  width: 200px;
+  height: 140px;
+  bottom : 20vh;
+  margin: 0 0 0 2vh;
+  padding : 3px 0 0 3px;
+  border-radius: 35px;
+  border: 1px solid #CD84F1;
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 12;
+  font-size: smaller;
+}
