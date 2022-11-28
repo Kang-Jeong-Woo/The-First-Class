@@ -4,31 +4,35 @@ $(function() {
    * Data and config for chartjs
    */
   'use strict';
-  var data = {
-    labels: ["2013", "2014", "2014", "2015", "2016", "2017"],
-    datasets: [{
-      label: '# of Votes',
-      data: [10, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1,
-      fill: false
-    }]
-  };
+   data = {
+  labels: [
+    '상가/점포/소매',
+    '교육/사무/회계',
+    '카페/여가',
+    '중개/관리',
+    '생활/건강',
+    '음식/유흥',
+    '숙박/의류',
+    '애견/미용',
+    '기타'
+  ],
+  datasets: [{
+    label: '업종의 점포 수',
+    data: [1342, 426, 868, 311, 615, 1523, 742, 426, 210],
+    backgroundColor: [
+      'rgb(255, 102, 102)',
+      'rgb(255, 178, 102)',
+      'rgb(255, 255, 102)',
+      'rgb(102, 255, 102)',
+      'rgb(102, 255, 255)',
+      'rgb(102, 102, 255)',
+      'rgb(178, 102, 255)',
+      'rgb(255, 102, 255)',
+      'rgb(192, 192, 192)'
+    ],
+    hoverOffset: 4
+  }]
+};
   var multiLineData = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
     datasets: [{

@@ -240,6 +240,12 @@ canvas {
   display: inline-block;
 }
 
+canvas-chart {
+	width: 450px;
+	height: 450px;
+	display: inline-block;
+}
+
 template {
   display: none;
 }
@@ -760,6 +766,20 @@ pre code {
   margin-right: auto;
   padding-right: 15px;
   padding-left: 15px;
+}
+
+.container-fd {
+	width: 560px;
+	height: 560px;
+	margin-left: auto;
+ 	margin-right: auto;
+}
+
+.container-chart {
+	min-width: 450px;
+	min-height: 450px;
+	margin-left: auto;
+ 	margin-right: auto;
 }
 
 @media (min-width: 576px) {

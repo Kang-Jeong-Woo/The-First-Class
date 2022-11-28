@@ -89,7 +89,11 @@ public class MemberController {
     }
     @GetMapping("getRe.do")
     public @ResponseBody List<RealestatesVO> distanceCheck(float lat, float lng, float level){
+    	System.out.print(level);
         List<RealestatesVO> re_list = mapper.distanceCheck(lat, lng, level);
         return re_list;
     }
+    
+    @GetMapping("/canvaschart.do")
+    public void canvaschart(){}
 }

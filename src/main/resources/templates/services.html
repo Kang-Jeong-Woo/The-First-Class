@@ -7,7 +7,7 @@
 
     IMPORTANT: You can do whatever you want with this template but you need to keep the footer link back to ProBootstrap.com
     -->
-    <title>Aside - Free HTML5 Bootstrap 4 Template by ProBootstrap.com</title>
+    <title>명당 - BigData Chart</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Free HTML5 Website Template by ProBootstrap.com" />
@@ -39,37 +39,231 @@
         <div class="probootstrap-main-site-logo"><a href="../../../../../../Downloads/aside-master/aside-master/index.html">Aside</a></a></div>
       </div>
 
+	<!-- 차트 애니메이션, jquery값 -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
 
         <!-- END row -->
-
         <section class="probootstrap-section">
           <div class="container-fluid">
             <div class="row mb-5">
               
-              <div class="col-lg-6 col-md-6">
-                <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4">
-                  <div class="mb-3"><h4>월간 매매 심리 3종 한 눈에 보기</h4></div>
-                  <div class="mb-3">가격상승전망 지역, 매수자가 많은 지역, 거래활발 지역을 4분면에서 한 눈에 확인해보세요.</div>
-                  <div class="media-body">
-                    <canvas id="BubbleOne">여기가 캔버스</canvas>
-                  </div>
+              <div class="container-fd">
+               <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4">
+                  <div class="pie-name"><h4>업종별 점포수 한눈에 보기</h4></div>
+                  <div class="pie-info">가게별 업종수를 한 눈에 확인해보세요.</div>
+                  <div class="container-chart">
+                    <canvas class="canvas-chart" id="PieChart" width="450px" height="450px">업종별 점포수</canvas>
+                  
+                  <script>
+                                    
+               // Bar chart
+               var ctx = document.getElementById('PieChart');
+			    var PieChart = new Chart(ctx, {
+			      type: 'pie',
+			      data:{
+			        labels:[
+			  			    '상가/점포/소매', '교육/사무/회계', '카페/여가', '중개/관리', 
+			                '생활/건강', '음식/유흥', '숙박/의류', '애견/미용', '기타',
+			                ],
+			                datasets:[
+			                {
+			                label:'업종의 점포 수',
+			                data:[1342, 426, 868, 311, 615, 1523, 742, 426, 210], // 추후 DB에서 가져옴
+			                backgroundColor: [
+			                'rgb(255, 102, 102)', 'rgb(255, 178, 102)', 'rgb(255, 255, 102)', 'rgb(102, 255, 102)',
+			                'rgb(102, 255, 255)', 'rgb(102, 102, 255)', 'rgb(178, 102, 255)', 'rgb(255, 102, 255)', 'rgb(192, 192, 192)',
+			                ],
+			                hoverOffset: 4  
+			            }]
+			        },
+			    /* 차트 옵션(크기, 후버, 그림자, 스케일 조정, 등) */
+			        options: {
+			              responsive: false,
+			              scales: {
+			                  yAxes: [{
+			                      ticks: {
+			                          beginAtZero: true
+			                      }
+			                  }]
+			              },
+			          }
+			      });
+				</script>
+                  </div>                  
+                  
                 </div>
               </div>
 
-              <div class="col-lg-6 col-md-6">
+              <div class="container-fd">
                 <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4">
-                  <div class="mb-3"><h4>소득대비 주택가격 [PIR]</h4></div>
-                  <div class="mb-3">PIR(Price to income ratio)= 주택가격/가구소득 PIR은 주택가격을 가구소득으로 나눈 값입니다.</div>
-                  <div class="media-body">
-                    <canvas id="lineChartOne">여기가 캔버스</canvas>
+                  <div class="bar-name"><h4>일일 평균 유동인구 정보</h4></div>
+                  <div class="bar-info">유동인구를 파악하여 평균치를 계산하여 제공해줍니다.</div>
+                  <div class="container-chart">
+                    <canvas class="canvas-chart" id="BarChart" width="450px" height="450px">평균 유동인구 정보</canvas>
+                 	
+                 	<script>
+                 // Bar chart
+                  var ctx = document.getElementById('BarChart');
+				    var BarChart = new Chart(ctx, {
+				      type: 'bar',
+				      data:{
+				        labels:[
+				                '학운/지원', '지산/산수', '계림/동명/충장', '서남/학동', '동천/광천', '유덕/치평', '상무/화정', 
+				                '농성/양동', '금호/풍암/서창', '월산/사직', '백운/봉선', '양림/방림', '주월/효덕', '송암/대촌', 
+				                '건국/석곡', '일곡/양산', '동림/운암', '매곡/삼각', '오치/용봉', '임동/신안/중앙', '문흥/문화', 
+				                '중흥/우산', '두암/풍향', '임곡/하남', '본량/삼도', '어룡/평동', '도산/동곡', '송정/신흥', 
+				                '월곡/우산', '신창/신가', '운남/수완', '첨단/비아'],
+				                datasets:[
+				                	     {
+				                    	  label: '동구',
+				                    	  fillcolor: 'red',
+				                    	  data: [2235, 4235, 2354, 3546]
+				                    	 },
+				                    	 {
+					                      label: '서구', 
+					                      fillcolor: 'yellow',
+					                      data: [3215, 2345, 3215, 2351, 5434]
+					                     },
+					                     {
+						                  label: '남구', 
+						                  fillcolor: 'green',
+						                  data: [3215, 2346, 2347, 4264, 3543]
+						                 },
+						                 {
+							              label: '북구', 
+							              fillcolor: 'blue',
+							              data: [2426, 2356, 6423, 5422, 3245, 2234, 3546, 2345, 6542]
+							             },
+							             {
+								          label: '광산구', 
+								          fillcolor: 'purple',
+								          data: [3241, 3246, 2346, 2487, 2426, 3546, 2431, 5423, 5462]
+								         }
+							           ],
+							            
+				                     // 추후 DB에서 가져옴 (표 색칠값)
+				                backgroundColor: [
+				                'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)',
+				
+				                'rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86, 0.2)', 
+				                'rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86, 0.2)',
+				
+				                'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 0.2)', 
+				                'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 0.2)',
+				
+				                'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)',
+				                'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)',
+				                'rgba(54, 162, 235, 0.2)',
+				
+				                'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)',
+				                'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)',
+				                'rgba(153, 102, 255, 0.2)'
+				                ],
+				                // 표 모양 테두리 값
+				                borderColor: [
+				                'rgb(255, 99, 132)', 'rgb(255, 99, 132)', 'rgb(255, 99, 132)', 'rgb(255, 99, 132)',
+				
+				                'rgb(255, 205, 86)', 'rgb(255, 205, 86)', 'rgb(255, 205, 86)', 'rgb(255, 205, 86)', 'rgb(255, 205, 86)',
+				
+				                'rgb(75, 192, 192)', 'rgb(75, 192, 192)', 'rgb(75, 192, 192)', 'rgb(75, 192, 192)', 'rgb(75, 192, 192)',
+				
+				                'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)',
+				                'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)',
+				
+				                'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)',
+				                'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)',
+				                ],
+				                borderWidth: 1    
+				            },
+						    /* 차트 옵션(크기, 후버, 그림자, 스케일 조정, 등) */
+					        options: {
+					              responsive: false,
+					              scales: {
+					                  yAxes: [{
+					                      ticks: {
+					                          beginAtZero: true
+			                      }
+			                  }]
+			              },
+			          }
+			      });
+				        
+				    </script>
                   </div>
                 </div>
               </div>
 
             </div>
             
-            
+            <!-- let http = require('http');
+
+				let express = require('express');
+				
+				let bodyParser = require('services');
+				
+				app = express();
+				
+				let inputData = { data1 : 'node to tomcat testdata1', data2 : 'node to tomcat testdata2'};
+				// 전달하고자 하는 데이터 생성
+				
+				let opts = {
+				    host: '127.0.0.1',
+				    port: 8080,
+				    method: 'POST',
+				    path: '/start',
+				    headers: {'Content-type': 'application/json'},
+				    body: inputData
+				};
+				
+				
+				// 전달 방식은 json 형태.
+				let resData = '';
+				let req = http.request(opts, function(res) {
+				
+				    res.on('end', function() {
+				        console.log(resData);
+				    });
+				});
+				
+				opts.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+				req.data = opts ;
+				opts.headers['Content-Length'] = req.data.length;
+				
+				req.on('error', function(err) {
+				    console.log("에러 발생 : " + err.message);
+				});
+				
+				
+				app.use(bodyParser.urlencoded({ extended: false}));
+				
+				app.use(bodyParser.json());
+				
+				app.use(function (req,res,next) {
+				    //console.log("정우형 재형이형 사랑해");
+				
+				    res.writeHead('200',{'Content-Type':'text/html;charset=utf8'});
+				    res.end('<h1>응원해줘서 고마워요</h1>');
+				    console.log(req.body);
+				
+				});
+				
+				// 요청 전송
+				req.write(JSON.stringify(req.data.body));
+				
+				req.end();
+				
+				http.createServer(app).listen(1516, function(){
+				    console.log('Server is running...');
+				}); -->
 
             
           </div>
@@ -84,85 +278,40 @@
 
 
     <script>
-      let drawbubbleOne = document.getElementById('BubbleOne').getContext('2d');
-      let drawlineOne = document.getElementById('lineChartOne').getContext('2d');
+    
+    
+    
+    var lineChartOne = document.getElementById('lineChartOne').getContext('2d');
 
-      const bubbleOne = new Chart(drawbubbleOne,{
-        type: 'bubble',
-        data: {
-          datasets: [{
-            label: 'First Dataset',
-            data: [{x: 20,y: 30,r: 15},
-                   {x: 40,y: 10,r: 10},
-                   {x:0,y:0,r:0},
-                   {x:200,y:200,r:0}],
-            backgroundColor: 'rgb(255, 99, 132)'
-          }]
-        },
-        options: {
-          scales:{
-            x:{
-              grid:{
-                color: function (context) {
-                  if (context.tick.value != 100) {
-                    return 'rgb(211, 211, 211)';
-                  } else {
-                    return 'rgb(255, 99, 132)';
-                  }
-                },
-              }
-            },
-            y: {
-              grid: {
-                color: function (context) {
-                  if (context.tick.value != 100) {
-                    return 'rgb(211, 211, 211)';
-                  } else {
-                    return 'rgb(255, 99, 132)';
-                  }
-                },
-              }
-            }
-          }
-        }
-      })
+      
+      
+      
 
-      const DATA_COUNT = 7;
-      const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+   /*    const DATA_COUNT = 7;
+      const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100}; */
 
-      const labels = ['2017','2018','2019','2020','2021','2022'];
-      const lineChartOneData = {
+      const labels = ['학운/지원', '지산/산수', '계림/동명/충장', '서남/학동', '동천/광천', '유덕/치평', '상무/화정', '농성/양동', '금호/풍암/서창', '월산/사직', '백운/봉선', '양림/방림', '주월/효덕', '송암/대촌', '건국/석곡', '일곡/양산', '동림/운암', '매곡/삼각', '오치/용봉', '임동/신안/중앙', '문흥/문화', '중흥/우산', '두암/풍향', '임곡/하남', '본량/삼도', '어룡/평동', '도산/동곡', '송정/신흥', '월곡/우산', '신창/신가', '운남/수완', '첨단/비아'];
+      const data = {
         labels: labels,
-        datasets: [
-          {
-            label: 'My First dataset',
-            data: [10, 20, 30, 40, 50, 60],
-            borderColor: '#ff3838',
-            backgroundColor: '#ff4d4d',
-            fill: true
-          },
-          {
-            label: 'My Second dataset',
-            data: [20, 30, 10, 60, 70, 10],
-            borderColor: '#c56cf0',
-            backgroundColor: '#cd84f1',
-            fill: true
-          },
-          {
-            label: 'My Third dataset',
-            data: [20, 10, 30, 70, 10, 60],
-            borderColor: '#32ff7e',
-            backgroundColor: '#3ae374',
-            fill: true
-          },
-          {
-            label: 'My Fourth dataset',
-            data: [70, 10, 10, 10, 20, 70],
-            borderColor: '#fff200',
-            backgroundColor: '#fffa65',
-            fill: true
-          }
-        ]
+        datasets: [{
+          label: '일일 평균 유동인구 정보',
+          data: [1235, 4235, 1354, 3546, 3215, 2345, 3215, 1351, 5434, 3215, 1346, 1347, 4264, 3543, 2426, 1356, 6423, 5422, 3245, 1234, 3546, 2345, 6542, 3241, 3246, 2346, 2487, 2426, 3546, 2431, 5423, 5462],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)'
+          ],
+          borderWidth: 1
+        }]
       };
 
       const lineOne = new Chart(drawlineOne, {
