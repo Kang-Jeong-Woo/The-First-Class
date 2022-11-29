@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -25,10 +26,10 @@ public class MemberController {
         return "index";
     }
 
-    @GetMapping("goSignIn.do")
+    @GetMapping("/goSignIn.do")
     public void signIn(){}
 
-    @GetMapping("goSignUp.do")
+    @GetMapping("/goSignUp.do")
     public void signUp(){}
 
     @GetMapping("/signIn.do")
@@ -87,9 +88,21 @@ public class MemberController {
         model.addAttribute("vo",vo);
         return "main";
     }
-    @GetMapping("getRe.do")
+    @GetMapping("/getRe.do")
     public @ResponseBody List<RealestatesVO> distanceCheck(float lat, float lng, float level){
         List<RealestatesVO> re_list = mapper.distanceCheck(lat, lng, level);
         return re_list;
     }
+
+    @GetMapping("/getLatLng.do")
+    public @ResponseBody HashMap<String, List<RealestatesVO>> getLatLng(){
+        List<RealestatesVO> latLngList = mapper.getAllLatLng();
+        HashMap<String, List<RealestatesVO>> list = new HashMap<>();
+        list.put("positions", latLngList);
+        return list;
+    }
+
+
+
+
 }

@@ -26,6 +26,8 @@
         select * from realestates where #{level} >= ( 6371 * acos( cos( #{lat}*3.14/180 ) * cos( lat*3.14/180 ) * cos( (lng*3.14/180) - (#{lng}*3.14/180) ) + sin( #{lat}*3.14/180 ) * sin( lat*3.14/180 ) ) );
     </select>
 
-
+    <select id="getAllLatLng" resultType="com.first.boiler.entity.RealestatesVO">
+        select lat, lng from realestates;
+    </select>
 
 </mapper>
