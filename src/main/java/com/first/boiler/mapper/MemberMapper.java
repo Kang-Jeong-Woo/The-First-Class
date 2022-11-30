@@ -14,9 +14,5 @@ public interface MemberMapper {
 
     public void signUp(MemberVO vo);
 
-    public List<RealestatesVO> getAllRe();
 
-    public List<RealestatesVO> distanceCheck(float lat, float lng, float level);
-
-    public List<RealestatesVO> getAllLatLng();
 }
