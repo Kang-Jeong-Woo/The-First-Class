@@ -93,7 +93,5 @@ public class MemberController {
         List<RealestatesVO> re_list = mapper.distanceCheck(lat, lng, level);
         return re_list;
     }
-    
-    @GetMapping("/canvaschart.do")
-    public void canvaschart(){}
+
 }

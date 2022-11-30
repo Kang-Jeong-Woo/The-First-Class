@@ -49,6 +49,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
 
         <!-- END row -->
@@ -66,13 +67,13 @@
                   <script>
                                     
                // Bar chart
-               var ctx = document.getElementById('PieChart');
+               var ctx = document.getElementById('PieChart').getContext('2d');
 			    var PieChart = new Chart(ctx, {
 			      type: 'pie',
 			      data:{
 			        labels:[
 			  			    '상가/점포/소매', '교육/사무/회계', '카페/여가', '중개/관리', 
-			                '생활/건강', '음식/유흥', '숙박/의류', '애견/미용', '기타',
+			                '생활/건강', '음식/유흥', '숙박/의류', '애견/미용', '기타'
 			                ],
 			                datasets:[
 			                {
@@ -80,122 +81,116 @@
 			                data:[1342, 426, 868, 311, 615, 1523, 742, 426, 210], // 추후 DB에서 가져옴
 			                backgroundColor: [
 			                'rgb(255, 102, 102)', 'rgb(255, 178, 102)', 'rgb(255, 255, 102)', 'rgb(102, 255, 102)',
-			                'rgb(102, 255, 255)', 'rgb(102, 102, 255)', 'rgb(178, 102, 255)', 'rgb(255, 102, 255)', 'rgb(192, 192, 192)',
+			                'rgb(102, 255, 255)', 'rgb(102, 102, 255)', 'rgb(178, 102, 255)', 'rgb(255, 102, 255)', 'rgb(192, 192, 192)'
 			                ],
 			                hoverOffset: 4  
-			            }]
-			        },
-			    /* 차트 옵션(크기, 후버, 그림자, 스케일 조정, 등) */
-			        options: {
-			              responsive: false,
-			              scales: {
-			                  yAxes: [{
-			                      ticks: {
-			                          beginAtZero: true
-			                      }
-			                  }]
-			              },
-			          }
-			      });
+			            }],
+			        }});
+			        /* 차트 옵션(크기, 후버, 그림자, 스케일 조정, 등) */
+			        window.onload = function(){
+			        	var ctx8 = $('PieChart').get(0).getContext("2d");
+			        	window.theChart8 = new Chart(ctx8, {
+			                type: 'pie',
+			                data: data,
+			                options: {
+			                        responsive: true,
+			                        legend: false,
+			                        maintainAspectRatio : false,
+			                        animation: false,
+			                        pieceLabel: {
+			                          mode:"label",
+			                          position:"inside",
+			                          fontSize: 11,
+			                          fontStyle: 'bold'
+			                       }
+			                }
+			            })
+			        };
+	  
 				</script>
                   </div>                  
-                  
+                  <br>
                 </div>
               </div>
-
+			
               <div class="container-fd">
                 <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4">
                   <div class="bar-name"><h4>일일 평균 유동인구 정보</h4></div>
                   <div class="bar-info">유동인구를 파악하여 평균치를 계산하여 제공해줍니다.</div>
+                  	<select name="sido1" id="sido1" class="border border-success p-2 mb-2 border-opacity-50"></select>
+					<select name="gugun1" id="gugun1" class="border border-success p-2 mb-2 border-opacity-50"></select>
                   <div class="container-chart">
                     <canvas class="canvas-chart" id="BarChart" width="450px" height="450px">평균 유동인구 정보</canvas>
                  	
                  	<script>
-                 // Bar chart
-                  var ctx = document.getElementById('BarChart');
-				    var BarChart = new Chart(ctx, {
-				      type: 'bar',
-				      data:{
-				        labels:[
-				                '학운/지원', '지산/산수', '계림/동명/충장', '서남/학동', '동천/광천', '유덕/치평', '상무/화정', 
-				                '농성/양동', '금호/풍암/서창', '월산/사직', '백운/봉선', '양림/방림', '주월/효덕', '송암/대촌', 
-				                '건국/석곡', '일곡/양산', '동림/운암', '매곡/삼각', '오치/용봉', '임동/신안/중앙', '문흥/문화', 
-				                '중흥/우산', '두암/풍향', '임곡/하남', '본량/삼도', '어룡/평동', '도산/동곡', '송정/신흥', 
-				                '월곡/우산', '신창/신가', '운남/수완', '첨단/비아'],
-				                datasets:[
-				                	     {
-				                    	  label: '동구',
-				                    	  fillcolor: 'red',
-				                    	  data: [2235, 4235, 2354, 3546]
-				                    	 },
-				                    	 {
-					                      label: '서구', 
-					                      fillcolor: 'yellow',
-					                      data: [3215, 2345, 3215, 2351, 5434]
-					                     },
-					                     {
-						                  label: '남구', 
-						                  fillcolor: 'green',
-						                  data: [3215, 2346, 2347, 4264, 3543]
-						                 },
-						                 {
-							              label: '북구', 
-							              fillcolor: 'blue',
-							              data: [2426, 2356, 6423, 5422, 3245, 2234, 3546, 2345, 6542]
-							             },
-							             {
-								          label: '광산구', 
-								          fillcolor: 'purple',
-								          data: [3241, 3246, 2346, 2487, 2426, 3546, 2431, 5423, 5462]
-								         }
-							           ],
-							            
-				                     // 추후 DB에서 가져옴 (표 색칠값)
-				                backgroundColor: [
-				                'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)',
-				
-				                'rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86, 0.2)', 
-				                'rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86, 0.2)',
-				
-				                'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 0.2)', 
-				                'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 0.2)',
-				
-				                'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)',
-				                'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)',
-				                'rgba(54, 162, 235, 0.2)',
-				
-				                'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)',
-				                'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)',
-				                'rgba(153, 102, 255, 0.2)'
-				                ],
-				                // 표 모양 테두리 값
-				                borderColor: [
-				                'rgb(255, 99, 132)', 'rgb(255, 99, 132)', 'rgb(255, 99, 132)', 'rgb(255, 99, 132)',
-				
-				                'rgb(255, 205, 86)', 'rgb(255, 205, 86)', 'rgb(255, 205, 86)', 'rgb(255, 205, 86)', 'rgb(255, 205, 86)',
-				
-				                'rgb(75, 192, 192)', 'rgb(75, 192, 192)', 'rgb(75, 192, 192)', 'rgb(75, 192, 192)', 'rgb(75, 192, 192)',
-				
-				                'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)',
-				                'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)', 'rgb(54, 162, 235)',
-				
-				                'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)',
-				                'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)', 'rgb(153, 102, 255)',
-				                ],
-				                borderWidth: 1    
-				            },
-						    /* 차트 옵션(크기, 후버, 그림자, 스케일 조정, 등) */
-					        options: {
-					              responsive: false,
-					              scales: {
-					                  yAxes: [{
-					                      ticks: {
-					                          beginAtZero: true
-			                      }
-			                  }]
-			              },
-			          }
-			      });
+                 	
+                 	$('document').ready(function() {
+       				 var area0 = ["행정구 선택","광산구", "남구", "동구", "북구", "서구"];
+       				  var area1 = ["도산동", "도천동", "비아동", "산월동", "산정동", "선암동", "소촌동", "송정동", 
+       				        "수완동", "신가동", "신창동", "신촌동", "쌍암동", "우산동", "운남동", "운수동", "월계동", "월곡동",
+       				        "장덕동", "하남동", "흑석동"];
+       				   var area2 = ["노대동", "방림동", "백운동", "봉선동", "사동", "서동", "송하동", "압촌동", "양림동",
+       				        "월산동", "임암동", "주월동", "지석동", "진월동", "행암동"];
+       				   var area3 = ["계림동", "금남로2가", "금남로5가", "동명동", "산수동", "선교동", "소태동", "수기동", "용산동",
+       				        "운림동", "월남동", "장동", "지산동", "충장로4가", "학동"];
+       				   var area4 = ["각화동", "동림동", "두암동", "매곡동", "문흥동", "본촌동", "삼각동", "신안동", "신용동",
+       				        "양산동", "연제동", "오치동", "용두동", "용봉동", "우산동", "운암동", "유동", "일곡동",
+       				        "임동", "중흥동", "풍향동"];
+       				   var area5 = ["광천동", "금호동", "내방동", "농성동", "동천동", "마륵동", "매월동", "쌍촌동", "양동",
+       				        "유촌동", "치평동", "풍암동", "화정동"];
+       				 		 
+
+       				 // 행정구 선택 박스 초기화
+
+       				 $("select[name^=sido]").each(function() {
+       				  $selsido = $(this);
+       				  $.each(eval(area0), function() {
+       				   $selsido.append("<option value='"+this+"'>"+this+"</option>");
+       				  });
+       				  $selsido.next().append("<option value=''>구/군 선택</option>");
+       				 });
+
+       				 // 행정구 선택시 행정동 설정
+
+       				 $("select[name^=sido]").change(function() {
+       				  var area = "area"+$("option",$(this)).index($("option:selected",$(this))); // 선택지역의 행정동 Array
+       				  var $gugun = $(this).next(); // 선택영역 행정동 객체
+       				  $("option",$gugun).remove(); // 행정동 초기화
+
+       				  if(area == "area0")
+       				   $gugun.append("<option value=''>행정동 선택</option>");
+       				  else {
+       				   $.each(eval(area), function() {
+       				    $gugun.append("<option value='"+this+"'>"+this+"</option>");
+       				   });
+       				  }
+       				 });
+       				});              
+				       
+                 	$(document).ready(function() {
+
+				        	$('gugun1').change(function() {
+				        		var pick = $(this).val();
+				        		alert(pick + "을 선택");
+				        	  
+				        	  $.ajax({
+				        	    url: "http://123.456.789.0/url",
+				        	    type: "get",
+				        	    dataType: "json",
+				        	    data: {"pick" : pick},
+				        	    success: function(data){
+				        	    	// 데이터를 받아오는데 성공
+				        	      $('BarChart').append(data);
+				        	    },
+				        	    error: function (request, status, error){
+				        	    	// 데이터를 받아오는데 실패
+				        	    }
+				        	    });
+				        	  
+				        	})
+
+				        	})
+			     
 				        
 				    </script>
                   </div>
@@ -349,7 +344,7 @@
           }
         }
       }
-      )
+     )
 
     </script>
 
