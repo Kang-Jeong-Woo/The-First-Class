@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- 
+    More Templates Visit ==> ProBootstrap.com
+    Free Template by ProBootstrap.com under the License Creative Commons 3.0 ==> (probootstrap.com/license)
+
+    IMPORTANT: You can do whatever you want with this template but you need to keep the footer link back to ProBootstrap.com
+    -->
+    <title>Aside - Free HTML5 Bootstrap 4 Template by ProBootstrap.com</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Free HTML5 Website Template by ProBootstrap.com" />
+    <meta name="keywords" content="free bootstrap 4, free bootstrap 4 template, free website templates, free html5, free template, free website template, html5, css3, mobile first, responsive" />
+    <meta name="author" content="ProBootstrap.com" />
+    
+    <!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/open-iconic-bootstrap.min.css">
+    
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="/css/icomoon.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  </head>
+  <body>
+
+    <div th:replace="/header.html"></div>
+
+    <main role="main" class="probootstrap-main js-probootstrap-main">
+      <div class="probootstrap-bar">
+        <a href="#" class="probootstrap-toggle js-probootstrap-toggle"><span class="oi oi-menu"></span></a>
+        <div class="probootstrap-main-site-logo"><a href="../../../../../../Downloads/aside-master/aside-master/index.html">Aside</a></a></div>
+      </div>
+
+
+
+        <!-- END row -->
+
+        <section class="probootstrap-section">
+          <div class="container-fluid">
+            <div class="row mb-5">
+              
+              <div class="col-lg-6 col-md-6">
+                <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4">
+                  <div class="mb-3"><h4>월간 매매 심리 3종 한 눈에 보기</h4></div>
+                  <div class="mb-3">가격상승전망 지역, 매수자가 많은 지역, 거래활발 지역을 4분면에서 한 눈에 확인해보세요.</div>
+                  <div class="media-body">
+                    <canvas id="BubbleOne">여기가 캔버스</canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4">
+                  <div class="mb-3"><h4>소득대비 주택가격 [PIR]</h4></div>
+                  <div class="mb-3">PIR(Price to income ratio)= 주택가격/가구소득 PIR은 주택가격을 가구소득으로 나눈 값입니다.</div>
+                  <div class="media-body">
+                    <canvas id="lineChartOne">여기가 캔버스</canvas>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            
+            
+
+            
+          </div>
+        </section>
+        <!-- END section -->
+
+      </div>
+
+
+    </main>
+
+
+    <script>
+      let drawbubbleOne = document.getElementById('BubbleOne').getContext('2d');
+      let drawlineOne = document.getElementById('lineChartOne').getContext('2d');
+
+      const bubbleOne = new Chart(drawbubbleOne,{
+        type: 'bubble',
+        data: {
+          datasets: [{
+            label: 'First Dataset',
+            data: [{x: 20,y: 30,r: 15},
+                   {x: 40,y: 10,r: 10},
+                   {x:0,y:0,r:0},
+                   {x:200,y:200,r:0}],
+            backgroundColor: 'rgb(255, 99, 132)'
+          }]
+        },
+        options: {
+          scales:{
+            x:{
+              grid:{
+                color: function (context) {
+                  if (context.tick.value != 100) {
+                    return 'rgb(211, 211, 211)';
+                  } else {
+                    return 'rgb(255, 99, 132)';
+                  }
+                },
+              }
+            },
+            y: {
+              grid: {
+                color: function (context) {
+                  if (context.tick.value != 100) {
+                    return 'rgb(211, 211, 211)';
+                  } else {
+                    return 'rgb(255, 99, 132)';
+                  }
+                },
+              }
+            }
+          }
+        }
+      })
+
+      const DATA_COUNT = 7;
+      const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+
+      const labels = ['2017','2018','2019','2020','2021','2022'];
+      const lineChartOneData = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'My First dataset',
+            data: [10, 20, 30, 40, 50, 60],
+            borderColor: '#ff3838',
+            backgroundColor: '#ff4d4d',
+            fill: true
+          },
+          {
+            label: 'My Second dataset',
+            data: [20, 30, 10, 60, 70, 10],
+            borderColor: '#c56cf0',
+            backgroundColor: '#cd84f1',
+            fill: true
+          },
+          {
+            label: 'My Third dataset',
+            data: [20, 10, 30, 70, 10, 60],
+            borderColor: '#32ff7e',
+            backgroundColor: '#3ae374',
+            fill: true
+          },
+          {
+            label: 'My Fourth dataset',
+            data: [70, 10, 10, 10, 20, 70],
+            borderColor: '#fff200',
+            backgroundColor: '#fffa65',
+            fill: true
+          }
+        ]
+      };
+
+      const lineOne = new Chart(drawlineOne, {
+        type: 'line',
+        data: lineChartOneData,
+        option: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: (lineChartOneData) => 'PIR'
+            },
+            tooltip: {
+              mode: 'index'
+            },
+          },
+          interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Month'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Value'
+              }
+            }
+          }
+        }
+      }
+      )
+
+    </script>
+
+
+    <script src="https://kit.fontawesome.com/81385b77d5.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.waypoints.min.js"></script>
+    <script src="/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/main.js"></script>
+
+    
+  </body>
+</html>

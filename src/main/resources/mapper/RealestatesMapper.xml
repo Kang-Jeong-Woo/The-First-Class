@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.first.boiler.mapper.RealestatesMapper">
+    <select id="getAllRe" resultType="com.first.boiler.entity.RealestatesVO">
+        select * from realestates;
+    </select>
+
+    <select id="distanceCheck" parameterType="float" resultType="com.first.boiler.entity.RealestatesVO">
+        select * from realestates where #{level} >= ( 6371 * acos( cos( #{lat}*3.14/180 ) * cos( lat*3.14/180 ) * cos( (lng*3.14/180) - (#{lng}*3.14/180) ) + sin( #{lat}*3.14/180 ) * sin( lat*3.14/180 ) ) );
+    </select>
+
+    <select id="getAllLatLng" resultType="com.first.boiler.entity.RealestatesVO">
+        select lat, lng from realestates;
+    </select>
+
+    <select id="getMoal" parameterType="int" resultType="com.first.boiler.entity.RealestatesVO">
+        select * from realestates where re_id = #{seq};
+    </select>
+</mapper>

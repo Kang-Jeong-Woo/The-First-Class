@@ -16,14 +16,4 @@
 
     <insert id="signUp" parameterType="com.first.boiler.entity.MemberVO">
         insert into members values (#{id},#{pw},#{nick},#{addr});
-    </insert>
-
-    <select id="getAllRe" resultType="com.first.boiler.entity.RealestatesVO">
-        select * from realestates;
-    </select>
-
-    <select id="distanceCheck" parameterType="float" resultType="com.first.boiler.entity.RealestatesVO">select * from realestates where 1 >= ( 6371 * acos( cos( #{lat}*3.14/180 ) * cos( lat*3.14/180 ) * cos( (lng*3.14/180) - (#{lng}*3.14/180) ) + sin( #{lat}*3.14/180 ) * sin( lat*3.14/180 ) ) );</select>
-
-
-
-</mapper>
+    </insert></mapper>
