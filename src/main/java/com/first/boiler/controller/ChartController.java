@@ -9,7 +9,8 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class ChartController {
-    @Autowired
+    
+	@Autowired
     private ChartMapper mapper;
 
     @GetMapping("/chart.do")
