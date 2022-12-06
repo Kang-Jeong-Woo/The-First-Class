@@ -13,7 +13,7 @@ import java.util.Date;
 @ToString
 public class RealestatesVO {
     // 상가업소 아이디
-    private Integer re_id;
+    private String re_id;
 
     // 카테고리
     private String re_categoy;

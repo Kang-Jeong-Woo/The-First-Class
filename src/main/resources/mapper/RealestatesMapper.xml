@@ -20,4 +20,18 @@
     <select id="getMoal" parameterType="int" resultType="com.first.boiler.entity.RealestatesVO">
         select * from realestates where re_id = #{seq};
     </select>
+
+    <select id="getNewRel" resultType="com.first.boiler.entity.RealestatesVO">
+        select * from realestates order by re_year desc limit 10
+    </select>
+
+    <select id="getUserRel" parameterType="String" resultType="com.first.boiler.entity.RealestatesVO">
+        select * from realestates where mem_id = #{mem_id}
+    </select>
+
+    <insert id="insertRel" parameterType="com.first.boiler.entity.RealestatesVO">
+        insert into realestates values(#{re_id}, 'g', #{re_name}, #{re_jibun},'상무지구','0','20221214',#{lat},#{lng},'즉시입주','강정우',#{re_deposit},#{re_rent},'0',#{re_usage});
+    </insert>
+
+
 </mapper>
