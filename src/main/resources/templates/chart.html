@@ -312,16 +312,6 @@
                 <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4" style="height: 620px; max-width: 550px;">
                   <div class="line-name"><h4>시간대별 평균 유동인구 정보</h4></div>
                   <div class="line-info">시간대에 따른 평균유동인구 정보를 확인하세요.</div>
-<<<<<<< HEAD
-=======
-                  	<select name="sido1" id="sido2" class="border border-success p-2 mb-2 border-opacity-50"></select>
-					<select name="gugun1" id="gugun2" class="border border-success p-2 mb-2 border-opacity-50"></select>
-                  
-                  
-                  
-                  <span id="Line"></span>
-                  <button onClick="Linechange()">검색</button>
->>>>>>> branch 'master' of https://github.com/Kang-Jeong-Woo/The-First-Class.git
                   <div class="container-chart" id="Lineupdate">
                     <canvas class="canvas-chart" id="lineChart" width="450px" height="450px">평균 유동인구 정보</canvas>
 
@@ -389,17 +379,8 @@
 	            <div class="row mb-5">
 	              <div class="container-fd" style="height: 620px; max-width: 550px;">
 	               <div class="media d-block mb-4 text-left probootstrap-media p-md-5 p-4" style="height: 620px; max-width: 550px;">
-<<<<<<< HEAD
                   <div class="mixed-name"><h4>월별 업종별 매출분석</h4></div>
                   <div class="mixed-info">월별 매출과 증감률을 확인해보세요.</div>
-=======
-                  <div class="mixed-name"><h4>행정동내 업종별 매출분석</h4></div>
-                  <div class="mixed-info">업종별 매출과 증감률을 확인해보세요.</div>
-                  <select name="sido1" id="sido3" class="border border-success p-2 mb-2 border-opacity-50"></select>
-					<select name="gugun1" id="gugun3" class="border border-success p-2 mb-2 border-opacity-50"></select>
-				  <span id="Mixed"></span>
-				  <input type="button" value="검색" onClick="Mixedchange()">
->>>>>>> branch 'master' of https://github.com/Kang-Jeong-Woo/The-First-Class.git
                   <div class="container-chart" id="Mixedupdate">
                     <canvas class="canvas-chart" id="MixedChart" width="450px" height="450px">업종별 매출분석</canvas>
                   
@@ -792,10 +773,6 @@
              	}
                   </script>
 	</form>
-=======
-			        /* 차트 옵션(크기, 후버, 그림자, 스케일 조정, 등) */
-			        	  
-				</script>
 				
 				<script>
 				
@@ -841,76 +818,9 @@
       				});
 				
 				</script>
-            
-            <!-- let http = require('http');
-
-				let express = require('express');
-				
-				let bodyParser = require('services');
-				
-				app = express();
-				
-				let inputData = { data1 : 'node to tomcat testdata1', data2 : 'node to tomcat testdata2'};
-				// 전달하고자 하는 데이터 생성
-				
-				let opts = {
-				    host: '127.0.0.1',
-				    port: 8080,
-				    method: 'POST',
-				    path: '/start',
-				    headers: {'Content-type': 'application/json'},
-				    body: inputData
-				};
-				
-				
-				// 전달 방식은 json 형태.
-				let resData = '';
-				let req = http.request(opts, function(res) {
-				
-				    res.on('end', function() {
-				        console.log(resData);
-				    });
-				});
-				
-				opts.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-				req.data = opts ;
-				opts.headers['Content-Length'] = req.data.length;
-				
-				req.on('error', function(err) {
-				    console.log("에러 발생 : " + err.message);
-				});
-				
-				
-				app.use(bodyParser.urlencoded({ extended: false}));
-				
-				app.use(bodyParser.json());
-				
-				app.use(function (req,res,next) {
-				    //console.log("정우형 재형이형 사랑해");
-				
-				    res.writeHead('200',{'Content-Type':'text/html;charset=utf8'});
-				    res.end('<h1>응원해줘서 고마워요</h1>');
-				    console.log(req.body);
-				
-				});
-				
-				// 요청 전송
-				req.write(JSON.stringify(req.data.body));
-				
-				req.end();
-				
-				http.createServer(app).listen(1516, function(){
-				    console.log('Server is running...');
-				}); -->
-				
-				
-            
+ 
           </div>
->>>>>>> branch 'master' of https://github.com/Kang-Jeong-Woo/The-First-Class.git
-        <!-- END section -->
 
-<<<<<<< HEAD
-=======
       </div>
 
                   </div>
@@ -925,7 +835,7 @@
 
     </script>
 
->>>>>>> branch 'master' of https://github.com/Kang-Jeong-Woo/The-First-Class.git
+
     <script src="https://kit.fontawesome.com/81385b77d5.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="/js/popper.min.js"></script>
