@@ -54,8 +54,8 @@
                     <div th:each="building : ${session.get('newRel')}" class="item">
                       <div class="p-4 border border-top-0">
                         <h4 th:text="${building.re_name}"> 건물 이름 </h4>
-                        <div th:text="'사용 승인 년도 : '+${building.re_year}"> 사용허가 년도</div>
-                        <div th:text="'입주여부 : '+${building.re_dt}"> 입주여부 </div>
+                        <div th:text="'사용 승인 년도 : '+${building.re_year}"> 건축 년도</div>
+                        <div th:text="'입주여부 : '+${building.re_dt}"> 사용 승인 일 </div>
                         <div th:text="'등록인 : '+${building.mem_id}"> 등록자 </div>
                         <input type="hidden" th:id="lat+${buildingStat.index}" th:value="${building.lat}">
                         <input type="hidden" th:id="lng+${buildingStat.index}" th:value="${building.lng}">

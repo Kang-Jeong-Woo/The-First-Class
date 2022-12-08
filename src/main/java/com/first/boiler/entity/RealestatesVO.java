@@ -13,7 +13,7 @@ import java.util.Date;
 @ToString
 public class RealestatesVO {
     // 상가업소 아이디
-    private String re_id;
+    private Integer re_id;
 
     // 카테고리
     private String re_categoy;
@@ -39,21 +39,21 @@ public class RealestatesVO {
     // 경도
     private Double lng;
 
-    // 등록 일자
+    // 사용 승인일
     private String re_dt;
 
-    // 회원 아이디
-    private String mem_id;
-
     // 보증금
-    private String re_deposit;
+    private Integer re_deposit;
 
     // 월세
-    private String re_rent;
+    private Integer re_rent;
 
     // 매출액
-    private String re_sales;
+    private Integer re_sales;
 
     // 건축물 용도
     private String re_usage;
+
+    // 회원 아이디
+    private String mem_id;
 }
