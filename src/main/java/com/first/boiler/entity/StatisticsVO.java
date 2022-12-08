@@ -9,9 +9,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SearchVO {
-    private int srch_sql;
-    private String srch_dong;
-    private String srch_category;
-    private int srch_cnt;
+public class StatisticsVO {
+    private Integer sta_idx;
+    private String sta_dong;
+    private String sta_category;
+    private Integer sta_cnt;
+    private String admin_id;
 }
