@@ -98,7 +98,7 @@ h1, h2, h3, h4, h5,
             width: 0;
             left: 0;
             height: 2px;
-            background: #1FAD9F;
+            background: red;
             -webkit-transition: .3s width ease-out;
             -o-transition: .3s width ease-out;
             transition: .3s width ease-out; }
@@ -733,7 +733,7 @@ textarea {
   margin: 0 0 0 2vh;
   padding : 3px 0 0 20px;
   border-radius: 35px;
-  border: 1px solid #CD84F1;
+  border: 2px solid red;
   box-sizing: border-box;
   position: fixed;
   z-index: 12;
