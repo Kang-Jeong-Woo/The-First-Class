@@ -23,4 +23,6 @@ public interface RealestatesMapper {
     public int count(SearchDTO params);
 
     public void insertRel(RealestatesVO vo);
+
+    public List<RealestatesVO> getRel();
 }
