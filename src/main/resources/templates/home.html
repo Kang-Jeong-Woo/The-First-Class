@@ -25,9 +25,7 @@
     <link rel="stylesheet" href="/css/icomoon.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
-
-
-
+  	
   </head>
   <body>
     
@@ -36,29 +34,30 @@
     <main role="main" class="probootstrap-main js-probootstrap-main">
       <div class="probootstrap-bar">
         <a href="#" class="probootstrap-toggle js-probootstrap-toggle"><span class="oi oi-menu"></span></a>
-        <div class="probootstrap-main-site-logo"><a href="home.html">Aside</a></a></div>
+        <div class="probootstrap-main-site-logo">
+        <a href="home.html">명당</a></div>
       </div>
-      <div class="card-columns">
-
-        <div class="card">
-          <a href="single.do">
-          <img class="card-img-top probootstrap-animate" src="/img/img_1.jpg" alt="Card image cap" data-animate-effect="fadeIn">
-          </a>
-        </div>
-
-
-
-        <div class="card">
-          <a href="about.html">
-            <img class="card-img-top probootstrap-animate" src="images/img_1.jpg" alt="Card image cap" data-animate-effect="fadeIn">
-          </a>
-        </div>
-
-
-
-
-      </div>
-
+   	   
+   	   	<div>
+	    <section class="left">  
+	          <article id="leftframe" style="position:absolute; top:-125px; left:5px;">
+		        <iframe id="iframe1" title="NewsFrame1" width="750px" height="2650px" scrolling="no"
+				src="https://www.r114.com/?_c=Research&_m=ReportNews&tagInfoStr=%EB%B6%80%EB%8F%99%EC%82%B0%ED%88%AC%EC%9E%90,
+				%EC%A0%80%ED%8F%89%EA%B0%80,%EC%95%84%ED%8C%8C%ED%8A%B8,%EB%91%94%EC%B4%8C%EC%A3%BC%EA%B3%B5,
+				%EC%98%AC%EB%A6%BC%ED%94%BD%ED%8C%8C%ED%81%AC%ED%8F%AC%EB%A0%88%EC%98%A8&sortType=
+				%EC%B5%9C%EC%8B%A0%EC%88%9C&sortOrderby=DESC" frameborder="0" align="left"></iframe>
+		      </article>
+		</section>
+        </div>  
+		        
+	<script>
+	// iframe 내의 콘텐츠로 접근
+	$('#NewsFrames').contents();
+	  
+	// iframe 내의 콘텐츠 class 또는 id 로 selector 
+	$('#NewsFrames').contents().find('.class');
+	$('#NewsFrames').contents().find('#id');
+	</script>
 
     </main>
 
