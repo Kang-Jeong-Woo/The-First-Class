@@ -107,7 +107,7 @@
             rvContainer = document.getElementById('roadview'), //로드뷰를 표시할 div 입니다
             mapOption = {
                 center: new kakao.maps.LatLng(35.14717184834894, 126.840887943028), // 지도의 중심좌표
-                level: 3 // 지도의 확대 레벨
+                level: 7 // 지도의 확대 레벨
             }
 
         // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
@@ -160,6 +160,8 @@
         cluster.markers = [];
         cluster.overlay = [];
         cluster.marker = [];
+		cluster.markerGu = [];
+		cluster.markerDong = [];
 
 
 
@@ -311,29 +313,55 @@
             cluster.markers.push(mMarker);
         };
 
+		// 지도에 구별 마커를 만드는 함수입니다.
+		function mkDongMapOverLay(mkAreaName, mkAreaCnt, mkAreaLat, mkAreaLng){
+			// 마커 표시될 위치입니다
+			var position = new kakao.maps.LatLng(mkAreaLat, mkAreaLng);
+			// 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+			var content = `<div class="customoverlay" xmlns="http://www.w3.org/1999/html">
+                            <div target="_blank">
+                                <span class="title">${mkAreaName}</br>${mkAreaCnt}</span>
+                            </div>
+                       </div>`;
+			// 커스텀 오버레이를 생성합니다
+			var customOverlay = new kakao.maps.CustomOverlay({
+				map: null,
+				position: position,
+				content: content,
+				yAnchor: 0
+			})
+			cluster.markerDong.push(customOverlay);
+		};
+
+		// 지도에 구별 마커를 만드는 함수입니다.
+		function mkGuMapOverLay(mkAreaName, mkAreaCnt, mkAreaLat, mkAreaLng){
+			// 마커 표시될 위치입니다
+			var position = new kakao.maps.LatLng(mkAreaLat, mkAreaLng);
+			// 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+			var content = `<div class="customoverlay" xmlns="#">
+                            <div target="_blank">
+                                <span class="title">${mkAreaName}</br>${mkAreaCnt}</span>
+                            </div>
+                       </div>`;
+			// 커스텀 오버레이를 생성합니다
+			var customOverlay = new kakao.maps.CustomOverlay({
+				map: null,
+				position: position,
+				content: content,
+				yAnchor: 0
+			})
+			cluster.markerGu.push(customOverlay);
+		};
+
         function mkClustererSI() {
-            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'; // 마커이미지의 주소입니다
-
-            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-                markerPosition = new kakao.maps.LatLng(35.1557282170845, 126.835434807872); // 마커가 표시될 위치입니다
-
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage, // 마커이미지 설정
-                map: null
-            });
             // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
             var content =  `<div class="customoverlay">
                                 <a href="" target="_blank">
-                                    <span class="title">약 3500개</span>
+                                    <span class="title">약 3473개</span>
                                 </a>
                             </div>`;
-
             // 커스텀 오버레이가 표시될 위치입니다
             var position = new kakao.maps.LatLng(35.1557282170845, 126.835434807872);
-
             // 커스텀 오버레이를 생성합니다
             var customOverlay = new kakao.maps.CustomOverlay({
                 map: null,
@@ -341,41 +369,6 @@
                 content: content,
                 yAnchor: 1
             });
-            cluster.marker.push(marker);
-            cluster.marker.push(customOverlay);
-        }
-
-        function mkClustererGU() {
-            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'; // 마커이미지의 주소입니다
-
-            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-                markerPosition = new kakao.maps.LatLng(35.1557282170845, 126.835434807872); // 마커가 표시될 위치입니다
-
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage, // 마커이미지 설정
-                map: null
-            });
-            // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-            var content =  `<div class="customoverlay">
-                                <a href="" target="_blank">
-                                    <span class="title">약 3500개</span>
-                                </a>
-                            </div>`;
-
-            // 커스텀 오버레이가 표시될 위치입니다
-            var position = new kakao.maps.LatLng(35.1557282170845, 126.835434807872);
-
-            // 커스텀 오버레이를 생성합니다
-            var customOverlay = new kakao.maps.CustomOverlay({
-                map: null,
-                position: position,
-                content: content,
-                yAnchor: 1
-            });
-            cluster.marker.push(marker);
             cluster.marker.push(customOverlay);
         }
 
@@ -396,7 +389,7 @@
                 }
             }
         }
-        // 마커 전체 삭제
+        // 시 마커 삭제
         cluster.marker.clear = function (){
             if(cluster.marker.length > 0){
                 for (var i = 0; i < cluster.marker.length; i++){
@@ -404,6 +397,22 @@
                 }
             }
         }
+		// 구 마커 전체 삭제
+		cluster.markerGu.clear = function (){
+			if(cluster.markerGu.length > 0){
+				for (var i = 0; i < cluster.markerGu.length; i++){
+					cluster.markerGu[i].setMap(null);
+				}
+			}
+		}
+		// 동 마커 전체 삭제
+		cluster.markerDong.clear = function (){
+			if(cluster.markerDong.length > 0){
+				for (var i = 0; i < cluster.markerDong.length; i++){
+					cluster.markerDong[i].setMap(null);
+				}
+			}
+		}
         // 마커, 오버레이 전체 삭제 함수
         cluster.clear = function (){
             if(cluster.overlay){
@@ -412,9 +421,12 @@
             if(cluster.marker){
                 cluster.marker.clear();
             }
-            if(cluster.markers){
-                cluster.markers.clear();
-            }
+			if(cluster.markerDong){
+				cluster.markerDong.clear();
+			}
+			if(cluster.markerGu){
+				cluster.markerGu.clear();
+			}
         }
 
         // 지도위에 있는 모든 마커를 표시하는 함수입니다.
@@ -434,7 +446,7 @@
                 }
             }
         }
-        // 마커 전체 표시
+        // 시 마커 표시
         cluster.marker.mkMarker = function (){
             if(cluster.marker.length > 0){
                 for (var i = 0; i < cluster.marker.length; i++){
@@ -442,6 +454,22 @@
                 }
             }
         }
+		// 구 마커 전체 표시
+		cluster.markerGu.mkMarker = function (){
+			if(cluster.markerGu.length > 0){
+				for (var i = 0; i < cluster.markerGu.length; i++){
+					cluster.markerGu[i].setMap(map);
+				}
+			}
+		}
+		// 동 마커 전체 표시
+		cluster.markerDong.mkMarker = function (){
+			if(cluster.markerDong.length > 0){
+				for (var i = 0; i < cluster.markerDong.length; i++){
+					cluster.markerDong[i].setMap(map);
+				}
+			}
+		}
 
 
         // 전달받은 좌표(position)에 가까운 로드뷰의 파노라마 ID를 추출하여
@@ -540,6 +568,7 @@
                         판매자 : ${res.mem_id}
                         보증금 : ${res.re_deposit}
                         월세 : ${res.re_rent}
+
                     `;
                     swal({title:res.re_name,
                         text:modalChang,
@@ -562,11 +591,48 @@
         // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
         // 지도가 확대 또는 축소되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
         kakao.maps.event.addListener(map, 'zoom_changed', function() {
-                var level = map.getLevel();
-                if(level >= 5){
-                    mkClustererSI();
-                    cluster.marker.mkMarker();
-                };
+			var level = map.getLevel();
+			console.log(level);
+			if(7>level && level>=5){
+				console.log("동 단위")
+				$.ajax({
+					type: 'GET',
+					url: 'getReDong.do',
+					dataType: 'JSON',
+					success: function (res) {
+						$.each(res, function (i, relDong) {
+							mkDongMapOverLay(relDong.area_name_d, relDong.area_cnt, relDong.lat, relDong.lng);
+						})
+					},
+					error: function (e) {
+						console.log(e);
+					}
+					})
+				cluster.markers.clear();
+				cluster.overlay.clear();
+				cluster.markerDong.mkMarker();
+			}else if (9>level && level>=7){
+				cluster.clear();
+				console.log("구 단위")
+				$.ajax({
+					type: 'GET',
+					url: 'getReGu.do',
+					dataType: 'JSON',
+					success: function (res) {
+						$.each(res, function (i, relGu) {
+							mkGuMapOverLay(relGu.area_name, relGu.area_del_dt, relGu.lat, relGu.lng);
+						})
+					},
+					error: function (e) {
+						console.log(e);
+					}
+				})
+				cluster.markerDong.clear();
+				cluster.markerGu.mkMarker();
+			}else{
+				cluster.markerGu.clear();
+				cluster.markerDong.clear();
+			}
         });
 
         // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다

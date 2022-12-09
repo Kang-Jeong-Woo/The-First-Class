@@ -52,4 +52,5 @@ public class RealestatesController {
         List<RealestatesVO> list = mapper.getRel();
         return list;
     }
+
 }

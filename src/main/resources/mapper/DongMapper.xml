@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.first.boiler.mapper.DongMapper">
+
+    <select id="getReDong" resultType="com.first.boiler.entity.Area_cVO">
+        select * from area_c
+    </select>
+    <select id="getReGu" resultType="com.first.boiler.entity.Area_bVO">
+        select * from area_b
+    </select>
+
+</mapper>

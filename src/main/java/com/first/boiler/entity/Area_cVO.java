@@ -15,8 +15,8 @@ public class Area_cVO {
     private String area_b_name;
     private String area_name;
     private String area_name_d;
-    private Integer lat;
-    private String lng;
+    private double lat;
+    private double lng;
     private String area_reg_dt;
     private String area_del_dt;
     private Integer area_cnt;

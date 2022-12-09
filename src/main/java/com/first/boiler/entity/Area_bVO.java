@@ -13,8 +13,8 @@ public class Area_bVO {
     private Integer area_idx;
     private String area_a_name;
     private String area_name;
-    private Integer lat;
-    private String lng;
+    private double lat;
+    private double lng;
     private String area_reg_dt;
     private String area_del_dt;
     private String admin_id;

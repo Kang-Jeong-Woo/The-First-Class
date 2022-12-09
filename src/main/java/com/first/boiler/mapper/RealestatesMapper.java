@@ -25,4 +25,5 @@ public interface RealestatesMapper {
     public void insertRel(RealestatesVO vo);
 
     public List<RealestatesVO> getRel();
+
 }
