@@ -69,7 +69,7 @@
             <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=VisualStudioCode&logoColor=white"/>
             <img src="https://img.shields.io/badge/Anaconda-44A833?style=for-the-badge&logo=Anaconda&logoColor=white"/>
             <img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=Jupyter&logoColor=white"/>
-            <img src="https://img.shields.io/badge/IntelliJIDEA-#000000?style=for-the-badge&logo=IntelliJIDEA&logoColor=white"/>
+            <img src="https://img.shields.io/badge/IntelliJ IDEA-#000000?style=for-the-badge&logo=IntelliJ IDEA&logoColor=white"/>
         </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@
     <tr>
         <td>데이터베이스</td>
         <td>
-            <img src="https://img.shields.io/badge/Oracle 11g-F80000?style=for-the-badge&logo=Oracle&logoColor=white"/>
+            <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"/>
         </td>
     </tr>
     <tr>
@@ -90,6 +90,7 @@
             <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white"/>
             <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/>
             <img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=GitLab&logoColor=white"/>
+            <img src="https://img.shields.io/badge/Sourcetree-0052CC?style=for-the-badge&logo=Sourcetree&logoColor=white"/>
         </td>
     </tr>
 </table>
