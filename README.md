@@ -1,4 +1,4 @@
-# 📎 Apple-Basket(팀명: 명당)
+# 📎 MyungDang(팀명: 명당)
 ![MYUNG](https://user-images.githubusercontent.com/104994979/206966589-22cd1735-0e94-4a0a-990c-9f3b94e95d98.jpg)
 
 ## 🪪 프로젝트 소개
